@@ -71,6 +71,19 @@ button{padding:6px 12px;cursor:pointer}
 var map=L.map('map').setView([-22.983025,-43.469346],12);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(map);
 
+ 
+let frameAtual=1;
+
+function abrirLink(link){
+ if(frameAtual===1){
+   document.getElementById('frame1').src=link;
+   frameAtual=2;
+ }else{
+   document.getElementById('frame2').src=link;
+   frameAtual=1;
+ }
+}
+ 
 function adicionarMarcador(botao){
  let linha=botao.parentNode.parentNode;
  let nome=linha.cells[0].innerText;
