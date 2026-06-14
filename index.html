@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -67,29 +68,10 @@ button{padding:6px 12px;cursor:pointer}
 
 <button onclick="novaLinha()">Nova Linha</button>
 
-
-
-<script src="./leaflet.js"></script>
-<script>
-
-
-<script src="./leaflet.js.download"></script>
+<script src="./Mapa com Coordenadas_files/leaflet.js.download"></script>
 <script>
 var map=L.map('map').setView([-22.983025,-43.469346],12);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(map);
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function adicionarMarcador(botao){
  let linha=botao.parentNode.parentNode;
@@ -97,11 +79,8 @@ function adicionarMarcador(botao){
  let lat=parseFloat(linha.cells[1].innerText);
  let lng=parseFloat(linha.cells[2].innerText);
  let link=linha.cells[3].innerText;
-
  let marker=L.marker([lat,lng]).addTo(map);
-
- marker.bindPopup('<b>'+nome+'</b>
-<br><a href="'+link+'" target="_blank">Abrir Site</a>');
+ marker.bindPopup('<b>'+nome+'</b><br><a href="'+link+'" target="_blank">Abrir Site</a>');
  map.setView([lat,lng],14);
 }
 
