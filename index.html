@@ -10,6 +10,9 @@ body{font-family:Arial,sans-serif;margin:0}
 table{width:100%;border-collapse:collapse;margin-top:10px}
 th,td{border:1px solid #ccc;padding:8px}
 button{padding:6px 12px;cursor:pointer}
+.frames{display:flex;height:500px}
+.frames iframe{width:50%;border:1px solid #ccc}
+
 </style>
 </head>
 <body>
@@ -66,12 +69,27 @@ button{padding:6px 12px;cursor:pointer}
 </table>
 
 <button onclick="novaLinha()">Nova Linha</button>
+ <div class="frames">
+<iframe id="frame1"></iframe>
+<iframe id="frame2"></iframe>
+</div>
 <script src="./leaflet.js"></script>
 <script>
 <script src="./leaflet.js.download"></script>
 <script>
 var map=L.map('map').setView([-22.983025,-43.469346],12);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(map);
+let frameAtual=1;
+
+function abrirLink(link){
+ if(frameAtual===1){
+   document.getElementById('frame1').src=link;
+   frameAtual=2;
+ }else{
+   document.getElementById('frame2').src=link;
+   frameAtual=1;
+ }
+}
 
 function adicionarMarcador(botao){
  let linha=botao.parentNode.parentNode;
@@ -80,8 +98,11 @@ function adicionarMarcador(botao){
  let lng=parseFloat(linha.cells[2].innerText);
  let link=linha.cells[3].innerText;
  let marker=L.marker([lat,lng]).addTo(map);
- marker.bindPopup('<b>'+nome+'</b><br><a href="'+link+'" target="_blank">Abrir Site</a>');
- map.setView([lat,lng],14);
+ marker.bindPopup('<b>'+nome+'</b>
+              <br><button onclick="abrirLink(\''+link+'\')">Abrir</button>');
+
+ marker.on('dblclick',function(){abrirLink(link);});
+
 }
 
 function novaLinha(){
