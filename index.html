@@ -3,9 +3,16 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<title>Mapa com Coordenadas</title>
+<title>Mapa com Frames Duplos</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 <style>
+body{font-family:Arial;margin:0}
+#map{height:450px}
+table{width:100%;border-collapse:collapse}
+th,td{border:1px solid #ccc;padding:6px}
+.frames{display:flex;height:500px}
+.frames iframe{width:50%;border:1px solid #ccc}
+</style>
 body{font-family:Arial,sans-serif;margin:0}
 #map{height:500px}
 table{width:100%;border-collapse:collapse;margin-top:10px}
