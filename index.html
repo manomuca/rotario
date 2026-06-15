@@ -22,13 +22,41 @@ th,td{border:1px solid #ccc;padding:6px}
 <th>Nome</th><th>Latitude</th><th>Longitude</th><th>URL</th><th>Ação</th>
 </tr></thead>
 <tbody>
-<tr>
-<td>Carnotim</td>
-<td>-3.838873</td>
-<td>-40.730253</td>
-<td>https://familiascearenses.com.br</td>
-<td><button onclick="adicionarMarcador(this)">Adicionar</button></td>
-</tr>
+
+ <tr><td contenteditable="true">zé duarte &gt; jpa</td>
+ <td contenteditable="true">-22.983025</td>
+ <td contenteditable="true">-43.469346</td>
+ <td contenteditable="true">https://www.camerasrj.com.br/camera/3303</td>
+ <td><button onclick="adicionarMarcador(this)">Adicionar</button></td></tr><tr><td contenteditable="true"><h1 class="DUwDvf lfPIob" style="background: rgb(255, 255, 255); border: 0px; border-radius: 0px; font-variant-numeric: inherit; font-variant-east-asian: inherit; font-variant-alternates: inherit; font-variant-position: inherit; font-variant-emoji: inherit; font-weight: 400; font-stretch: inherit; font-size: 1.375rem; line-height: 1.75rem; font-family: &quot;Google Sans&quot;, Roboto, Arial, sans-serif; font-optical-sizing: inherit; font-size-adjust: inherit; font-kerning: inherit; font-feature-settings: inherit; font-variation-settings: inherit; font-language-override: inherit; list-style: none; margin: 0px; outline: 0px; overflow: visible; padding: 0px; vertical-align: baseline; color: rgb(31, 31, 31);"><span style="color: rgb(0, 0, 0); font-family: Arial, sans-serif; font-size: medium;">Wizard Vargem &gt; jpa</span></h1></td>
+ <td contenteditable="true">-22.982159</td>
+ <td contenteditable="true">-43.46654996</td>
+ <td contenteditable="true">https://www.camerasrj.com.br/camera/3356/?t=1781370634251</td>
+ <td><button onclick="adicionarMarcador(this)">Adicionar</button></td></tr><tr><td contenteditable="true"><h1 class="DUwDvf lfPIob" style="background: rgb(255, 255, 255); border: 0px; border-radius: 0px; font-variant-numeric: inherit; font-variant-east-asian: inherit; font-variant-alternates: inherit; font-variant-position: inherit; font-variant-emoji: inherit; font-weight: 400; font-stretch: inherit; font-size: 1.375rem; line-height: 1.75rem; font-family: &quot;Google Sans&quot;, Roboto, Arial, sans-serif; font-optical-sizing: inherit; font-size-adjust: inherit; font-kerning: inherit; font-feature-settings: inherit; font-variation-settings: inherit; font-language-override: inherit; list-style: none; margin: 0px; outline: 0px; overflow: visible; padding: 0px; vertical-align: baseline; color: rgb(31, 31, 31);"><span style="color: rgb(0, 0, 0); font-family: Arial, sans-serif; font-size: medium;">Wizard Vargem &gt; vg</span></h1></td>
+ <td contenteditable="true">-22.9823157</td>
+ <td contenteditable="true">&nbsp;-43.4663328</td>
+ <td contenteditable="true">https://www.camerasrj.com.br/camera/3357</td>
+ <td><button onclick="adicionarMarcador(this)">Adicionar</button></td></tr><tr><td contenteditable="true">Rest Bosque&nbsp; &gt; vg</td>
+ <td contenteditable="true">-22.9824235</td>
+ <td contenteditable="true">-43.46318934</td>
+ <td contenteditable="true">https://www.camerasrj.com.br/camera/3359/?t=1781371223547</td>
+ <td><button onclick="adicionarMarcador(this)">Adicionar</button></td></tr><tr><td contenteditable="true">Rest Bosque&nbsp; &gt; jpa</td>
+ <td contenteditable="true">-22.9825142</td>
+ <td contenteditable="true">-43.463118823</td>
+ <td contenteditable="true">https://www.camerasrj.com.br/camera/3358</td>
+ <td><button onclick="adicionarMarcador(this)">Adicionar</button></td></tr><tr><td contenteditable="true">TMC &gt; VG</td>
+ <td contenteditable="true">-22.98408574</td>
+ <td contenteditable="true">-43.4613153</td>
+ <td contenteditable="true">https://www.camerasrj.com.br/camera/3363</td>
+ <td><button onclick="adicionarMarcador(this)">Adicionar</button></td></tr><tr><td contenteditable="true">tmc &gt; jpa</td>
+ <td contenteditable="true">-22.984346429</td>
+ <td contenteditable="true">-43.461599</td>
+ <td contenteditable="true">https://www.camerasrj.com.br/camera/3362</td>
+ <td><button onclick="adicionarMarcador(this)">Adicionar</button></td></tr><tr><td contenteditable="true">black gym &gt; jpa</td>
+ <td contenteditable="true">-22.984923686</td>
+ <td contenteditable="true">-43.4606122</td>
+ <td contenteditable="true">https://www.camerasrj.com.br/camera/3367/</td>
+ <td><button onclick="adicionarMarcador(this)">Adicionar</button></td></tr></tbody>
+</table>
 </tbody>
 </table>
 
@@ -41,7 +69,7 @@ th,td{border:1px solid #ccc;padding:6px}
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-var map=L.map('map').setView([-3.838873,-40.730253],12);
+var map=L.map('map').setView([-22.984923686,-43.4606122],12);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(map);
 
 let frameAtual=1;
