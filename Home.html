@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>CamerasRJ</title>
+
+<link rel="stylesheet"
+      href="https://unpkg.com/leaflet/dist/leaflet.css">
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+}
+
+#map{
+    height:450px;
+}
+
+.topo{
+    padding:10px;
+    background:#f2f2f2;
+}
+
+#filtro{
+    width:300px;
+    padding:5px;
+}
+
+.frames{
+    display:flex;
+    height:500px;
+}
+
+.frames iframe{
+    width:50%;
+    border:1px solid #ccc;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="topo">
+
+    <input
+        type="text"
+        id="filtro"
+        placeholder="Pesquisar câmera..."
+        onkeyup="filtrarCameras()">
+
+</div>
+
+<div id="map"></div>
+
+<div class="frames">
+
+    <iframe id="frame1"></iframe>
+
+    <iframe id="frame2"></iframe>
+
+</div>
+
+<script>
+
+const map =
+    L.map('map').setView(
+        [-22.983025,-43.469346],
+        12
+    );
+
+L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+        maxZoom:19
+    }
+).addTo(map);
+
+let frameAtual = 1;
+
+let listaCameras = [];
+
+let marcadores = [];
+
+function abrirCamera(url){
+
+    if(frameAtual === 1){
+
+        document
+        .getElementById("frame1")
+        .src = url;
+
+        frameAtual = 2;
+
+    }else{
+
+        document
+        .getElementById("frame2")
+        .src = url;
+
+        frameAtual = 1;
+    }
+}
+
+async function carregarCameras(){
+
+    const response =
+        await fetch('./cameras.json');
+
+    listaCameras =
+        await response.json();
+
+    desenharMarcadores();
+}
+
+function desenharMarcadores(){
+
+    marcadores.forEach(m=>{
+        map.removeLayer(m);
+    });
+
+    marcadores = [];
+
+    listaCameras.forEach(cam=>{
+
+        let marker =
+            L.marker([
+                cam.latitude,
+                cam.longitude
+            ]).addTo(map);
+
+        marker.bindPopup(`
+            <b>${cam.nome}</b>
+            <br><br>
+
+            <button
+              onclick="abrirCamera('${cam.url}')">
+              Abrir
+            </button>
+        `);
+
+        marker.on(
+            'dblclick',
+            ()=>abrirCamera(cam.url)
+        );
+
+        marcadores.push(marker);
+    });
+}
+
+function filtrarCameras(){
+
+    const texto =
+        document
+        .getElementById("filtro")
+        .value
+        .toLowerCase();
+
+    marcadores.forEach(m=>{
+        map.removeLayer(m);
+    });
+
+    marcadores = [];
+
+    listaCameras
+    .filter(cam=>
+        cam.nome
+        .toLowerCase()
+        .includes(texto)
+    )
+    .forEach(cam=>{
+
+        let marker =
+            L.marker([
+                cam.latitude,
+                cam.longitude
+            ]).addTo(map);
+
+        marker.bindPopup(`
+            <b>${cam.nome}</b>
+            <br><br>
+
+            <button
+              onclick="abrirCamera('${cam.url}')">
+              Abrir
+            </button>
+        `);
+
+        marker.on(
+            'dblclick',
+            ()=>abrirCamera(cam.url)
+        );
+
+        marcadores.push(marker);
+
+    });
+}
+
+carregarCameras();
+
+</script>
+
+</body>
+</html>
