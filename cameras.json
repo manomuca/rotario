@@ -1,20 +1,58 @@
 [
   {
     "nome": "Zé Duarte > JPA",
-    "latitude": -22.983025,
-    "longitude": -43.469346,
+    "latitude": -22.983025,    "longitude": -43.469346,
     "url": "https://www.camerasrj.com.br/camera/3303"
   },
   {
     "nome": "Wizard Vargem > JPA",
-    "latitude": -22.982159,
-    "longitude": -43.466549,
+    "latitude": -22.982159,    "longitude": -43.466549,
     "url": "https://www.camerasrj.com.br/camera/3356"
   },
   {
     "nome": "Ponte Madeira",
-    "latitude": -22.994359,
-    "longitude": -43.494285,
+    "latitude": -22.994359,    "longitude": -43.494285,
     "url": "https://www.camerasrj.com.br/camera/1986"
-  }
+  },
+  { 
+    "nome":"Banderantes altura da benvindo sentido Jacarepagua",
+    "latitude":	-22.992564560132266,    "longitude":-43.44708609260902,
+    "url":"https://www.camerasrj.com.br/camera/3242"
+  },
+  { 
+    "nome":"Piscinas Splash  sentido recreio",
+    "latitude":-22.993679952489636, "longitude":-43.447475229010635,	 
+    "url":"https://www.camerasrj.com.br/camera/3242"
+},
+{ 
+  "nome":"Wizard Vargem > vg",
+  "latitude":-22.9823157,	 "longitude":-43.4663328,
+  "url":"https://www.camerasrj.com.br/camera/3357"
+},
+{
+  "nome":"Rest Bosque  > vg",
+  "latitude":	-22.9824235,	"longitude":-43.46318934,
+  "url":"https://www.camerasrj.com.br/camera/3359" },
+{
+  "nome":"Rest Bosque  > jpa",
+  "latitude":	-22.9825142,	"longitude":-43.463118823,
+  "url":"https://www.camerasrj.com.br/camera/3358"},
+{
+ "nome": "TMC > VG",
+  "latitude":-22.98408574	,"longitude":-43.4613153,
+  "url":"https://www.camerasrj.com.br/camera/3363" },
+{
+  "nome":"tmc > jpa",
+  "latitude":-22.984346429,"longitude":	-43.461599,
+  	"url":"https://www.camerasrj.com.br/camera/3362"},
+{
+  "nome":"black gym > jpa",
+  "latitude":-22.984923686,	"longitude":-43.4606122,
+  "url":"https://www.camerasrj.com.br/camera/3367"	},
+{
+  "nome":"ponde madeira",
+  "latitude":-22.994359	, "longitude":-43.494285,
+  "url":"https://www.camerasrj.com.br/camera/1986"
+	}
+
 ]
