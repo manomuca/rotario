@@ -77,8 +77,12 @@
 },
 {
   "nome":"Treinamento Botafogo sentido Vargem",
-  "latitude":-22.986148224302084,, "longitude":  -43.431929751759554,
+  "latitude":-22.986148224302084, "longitude":  -43.431929751759554,
   "url":"https://www.camerasrj.com.br/camera/11059"
 },
-
+{
+  "nome":"Treinamento Botafogo sentido camorim",
+  "latitude":-22.986067773118094, "longitude":   -43.4318201988984,
+  "url":"https://www.camerasrj.com.br/camera/3459"
+}
 ]
