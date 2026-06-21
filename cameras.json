@@ -53,6 +53,32 @@
   "nome":"ponde madeira",
   "latitude":-22.994359	, "longitude":-43.494285,
   "url":"https://www.camerasrj.com.br/camera/1986"
-}
+	},
+{
+  "nome":"Sentido Vargem",
+  "latitude":-22.987806322955205, "longitude":-43.43393759174691,
+  "url":"https://www.camerasrj.com.br/camera/3461"
+},
+{
+  "nome":"tivit sentido Vargem",
+  "latitude":-22.985198699965725, "longitude":-43.43120234657557,
+  "url":"https://www.camerasrj.com.br/camera/3456"
+},
+
+{
+  "nome":"tivit sentido Vargem",
+  "latitude":-22.985198699965725, "longitude":-43.43120234657557,
+  "url":"https://www.camerasrj.com.br/camera/3456"
+},
+{
+  "nome":"Leilao sentido Vargem",
+  "latitude":-22.984896723473884, "longitude": -43.42990589453472,
+  "url":"https://www.camerasrj.com.br/camera/3457"
+},
+{
+  "nome":"Treinamento Botafogo sentido Vargem",
+  "latitude":-22.986148224302084,, "longitude":  -43.431929751759554,
+  "url":"https://www.camerasrj.com.br/camera/11059"
+},
 
 ]
