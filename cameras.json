@@ -100,4 +100,96 @@
   "latitude":-22.986067773118094, "longitude":   -43.4318201988984,
   "url":"https://www.camerasrj.com.br/camera/3459"
 }
+	 {
+    	"nome": "Bandeirante 22331 > Vargem",
+	"latitude": -22.98800014082087,   "longitude":-43.486215848808605,
+    	"url": "https://www.camerasrj.com.br/camera/1992"
+  },
+ {
+    	"nome": "Posto BR Vargem > Camorim ",
+	"latitude": -22.9930217095,   "longitude":-43.4481381557,
+    	"url": "https://www.camerasrj.com.br/camera/3244"
+  },
+ {
+    	"nome": "Bandeirante 22310 > Vargem",
+	"latitude": -22.9930217095,   "longitude":-43.4481381557,
+    	"url": "https://www.camerasrj.com.br/camera/1991"
+  },
+ {
+    	"nome": "Bandeirante 22289 > Vargem",
+	"latitude":-22.987367374551567,   "longitude":-43.488848800,
+    	"url": "https://www.camerasrj.com.br/camera/1990"
+  },
+ {
+    	"nome": "BANDEIRANTES, 21979 > Camorim",
+	"latitude":-22.987546, "longitude":-43.484038295739,
+    	"url": "https://www.camerasrj.com.br/camera/3292"
+  },
+ {
+    	"nome": "DOS BANDEIRANTES, 21979 > Camorim",
+	"latitude":-22.987509, "longitude":-43.484153,
+    	"url": "https://www.camerasrj.com.br/camera/3292"
+  },
+
+ {
+    	"nome": "DOS BANDEIRANTES, 21717  > Camorim",
+	"latitude":-22.987963, "longitude":-43.4815253,
+    	"url": "https://www.camerasrj.com.br/camera/3294"
+  },
+ {
+    	"nome": "BANDEIRANTES, 21717  > vargem",
+	"latitude":-22.987884, "longitude":-43.481718,
+    	"url": "https://www.camerasrj.com.br/camera/3293"
+  },
+ {
+    	"nome": "BANDEIRANTES, 21629   > Camorim",
+	"latitude":-22.987440, "longitude":-43.488853,
+    	"url": "https://www.camerasrj.com.br/camera/4108"
+  },
+	 {
+    	"nome": "Bandeirante 22331 > Vargem",
+	"latitude": -22.98800014082087,   "longitude":-43.486215848808605,
+    	"url": "https://www.camerasrj.com.br/camera/1992"
+  },
+ {
+    	"nome": "Posto BR Vargem > Camorim ",
+	"latitude": -22.9930217095,   "longitude":-43.4481381557,
+    	"url": "https://www.camerasrj.com.br/camera/3244"
+  },
+ {
+    	"nome": "Bandeirante 22310 > Vargem",
+	"latitude": -22.9930217095,   "longitude":-43.4481381557,
+    	"url": "https://www.camerasrj.com.br/camera/1991"
+  },
+ {
+    	"nome": "Bandeirante 22289 > Vargem",
+	"latitude":-22.987367374551567,   "longitude":-43.488848800,
+    	"url": "https://www.camerasrj.com.br/camera/1990"
+  },
+ {
+    	"nome": "BANDEIRANTES, 21979 > Camorim",
+	"latitude":-22.987546, "longitude":-43.484038295739,
+    	"url": "https://www.camerasrj.com.br/camera/3292"
+  },
+ {
+    	"nome": "DOS BANDEIRANTES, 21979 > Camorim",
+	"latitude":-22.987509, "longitude":-43.484153,
+    	"url": "https://www.camerasrj.com.br/camera/3292"
+  },
+
+ {
+    	"nome": "DOS BANDEIRANTES, 21717  > Camorim",
+	"latitude":-22.987963, "longitude":-43.4815253,
+    	"url": "https://www.camerasrj.com.br/camera/3294"
+  },
+ {
+    	"nome": "BANDEIRANTES, 21717  > vargem",
+	"latitude":-22.987884, "longitude":-43.481718,
+    	"url": "https://www.camerasrj.com.br/camera/3293"
+  },
+ {
+    	"nome": "BANDEIRANTES, 21629   > Camorim",
+	"latitude":-22.987440, "longitude":-43.488853,
+    	"url": "https://www.camerasrj.com.br/camera/4108"
+  },
 ]
