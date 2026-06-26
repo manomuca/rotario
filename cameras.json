@@ -60,6 +60,16 @@
   "url":"https://www.camerasrj.com.br/camera/3461"
 },
 {
+  "nome":"Imperio Lanches Sentido Vargem",
+  "latitude":-22.988746255623617, "longitude": -43.43893530477919,
+  "url":"https://www.camerasrj.com.br/camera/3451"
+},	
+	{
+"nome":"Imperio Lanches Sentido Camorim",
+"latitude":-22.988743071839, "longitude":-43.43955785076667,
+"url":"https://www.camerasrj.com.br/camera/3450"
+},
+{
   "nome":"tivit sentido Vargem",
   "latitude":-22.985198699965725, "longitude":-43.43120234657557,
   "url":"https://www.camerasrj.com.br/camera/3456"
