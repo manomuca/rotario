@@ -1,8 +1,13 @@
 [
+	{
+    "nome": "Zé Duarte > Vargem",
+    "latitude": -22.98300000564083,     "longitude": -43.46956188682458,
+    "url": "https://www.camerasrj.com.br/camera/3303"
+  },
   {
     "nome": "Zé Duarte > JPA",
     "latitude": -22.983025,    "longitude": -43.469346,
-    "url": "https://www.camerasrj.com.br/camera/3303"
+    "url": "https://www.camerasrj.com.br/camera/3304"
   },
   {
     "nome": "Wizard Vargem > JPA",
