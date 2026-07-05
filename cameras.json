@@ -191,5 +191,30 @@
     	"nome": "BANDEIRANTES, 21629   > Camorim",
 	"latitude":-22.987440, "longitude":-43.488853,
     	"url": "https://www.camerasrj.com.br/camera/4108"
+  },
+	 {
+    	"nome": "Americas, 9818    > Recreio",
+	"latitude":-22.999540, "longitude":-43.409873,
+    	"url": "https://www.camerasrj.com.br/camera/3208"
+  },
+	{
+    	"nome": "Americas, 9704    > Recreio",
+	"latitude":-22.999421, "longitude":-43.408677,
+    	"url": "https://www.camerasrj.com.br/camera/467"
+  },
+	{
+    	"nome": "Americas, 9650    > Ribalta",
+	"latitude":-22.999421, "longitude":-43.408677,
+    	"url": "https://www.camerasrj.com.br/camera/131"
+  },
+		{
+    	"nome": "Americas, 1106    > BRT Interlagos > Recreio",
+	"latitude":-23.000538, "longitude":-43.417591,
+    	"url": "https://www.camerasrj.com.br/camera/3207"
+  },
+			{
+    	"nome": "Glauci gil, 351    > praia",
+	"latitude":-23.000538, "longitude":-43.417591,
+    	"url": "https://www.camerasrj.com.br/camera/3215"
   }
 ]
