@@ -134,7 +134,7 @@
  {
     	"nome": "DOS BANDEIRANTES, 21717  > Camorim",
 	"latitude":-22.987963, "longitude":-43.4815253,
-    	"url": "https://www.camerasrj.com.br/camera/3294"
+    	"url": "https://www.camerasrj.com.br/camera/3294/?t=1783965023179"
   },
  {
     	"nome": "BANDEIRANTES, 21717  > vargem",
@@ -157,9 +157,9 @@
     	"url": "https://www.camerasrj.com.br/camera/3244"
   },
  {
-    	"nome": "Bandeirante 22310 > Vargem",
-	"latitude": -22.9930217095,   "longitude":-43.4481381557,
-    	"url": "https://www.camerasrj.com.br/camera/1991"
+    	"nome": "AV. GILKA MACHADO, 996  > Praia",
+	"latitude": -23.019578,   "longitude":-43.478323,
+    	"url": "https://www.camerasrj.com.br/camera/5174/?t=1783965242524"
   },
  {
     	"nome": "Bandeirante 22289 > Vargem",
@@ -185,11 +185,11 @@
  {
     	"nome": "BANDEIRANTES, 21717  > vargem",
 	"latitude":-22.987884, "longitude":-43.481718,
-    	"url": "https://www.camerasrj.com.br/camera/3293"
+    	"url": "https://www.camerasrj.com.br/camera/3293/?t=1783964284034"
   },
  {
     	"nome": "BANDEIRANTES, 21629   > Camorim",
-	"latitude":-22.987440, "longitude":-43.488853,
+	"latitude":-22.987616, "longitude":-43.479873,
     	"url": "https://www.camerasrj.com.br/camera/4108"
   },
 	 {
@@ -216,5 +216,31 @@
     	"nome": "Glauci gil, 351    > praia",
 	"latitude":-23.023325, "longitude":-43.457787,
     	"url": "https://www.camerasrj.com.br/camera/3215"
+    },
+			{
+    	"nome": "AV. GILKA MACHADO, 996     > Americas",
+	"latitude":-23.019519, "longitude":-43.478334,
+    	"url": "https://www.camerasrj.com.br/camera/5173"
+  },
+  			{
+    	"nome": "AV. GILKA MACHADO, 1101     > Altura Americas",
+	"latitude":-23.018018, "longitude":-43.479465,
+    	"url": "https://www.camerasrj.com.br/camera/5188/?t=1783965567484"
+  },
+  			{
+    	"nome": "AV. GILKA MACHADO, 1101  > Altura Americas",
+	"latitude":-23.018018, "longitude":-43.479465,
+    	"url": "https://www.camerasrj.com.br/camera/5188/?t=1783965755789"
+  },
+  			{
+    	"nome": "AV. GUIOMAR NOVAES, 199 > Praia",
+	"latitude":-23.020635, "longitude":-43.482711,
+    	"url": "https://www.camerasrj.com.br/camera/5188/?t=1783965755789"
+  },
+  			{
+    	"nome": "AV. GUIOMAR NOVAES, 199 > Americas",
+	"latitude":-23.020694, "longitude":-43.482690,
+    	"url": "https://www.camerasrj.com.br/camera/5188/?t=1783965988904"
   }
+
 ]
