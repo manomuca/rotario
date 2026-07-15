@@ -86,15 +86,15 @@ function inserir(){
 
 function obterCor(valor){
 
-    if(valor>=40) return "Purple";
+    if(valor>=25) return "Purple";
 
-    if(valor>=30) return "Green";
+    if(valor>=16) return "Green";
 
-    if(valor>=1.5) return "SpringGreen";
+    if(valor>=10) return "greenyellow";
 
-    if(valor>=1) return "Yellow";
+    if(valor>=4) return "SpringGreen";
 
-    if(valor>=0.5) return "Orange";
+    if(valor>=1.5) return "Lime";
 
     return "Red";
 
@@ -114,7 +114,7 @@ function desenhar(){
 
         item.style.background=obterCor(valor);
 
-        if(valor>=5 && valor<20){
+        if(valor>=1.5 && valor<20){
 
             item.style.color="black";
 
