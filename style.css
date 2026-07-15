@@ -1,0 +1,222 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:Arial,Helvetica,sans-serif;
+
+    background:#f2f2f2;
+
+    padding:15px;
+
+}
+
+.container{
+
+    display:flex;
+
+    gap:15px;
+
+    align-items:flex-start;
+
+}
+
+/* Painel da calculadora */
+
+.painel{
+
+    width:170px;
+
+    background:white;
+
+    padding:10px;
+
+    border-radius:8px;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+
+}
+
+/* Visor */
+
+#visor{
+
+    width:100%;
+
+    height:45px;
+
+    margin-bottom:10px;
+
+    font-size:26px;
+
+    font-weight:bold;
+
+    text-align:center;
+
+    border:2px solid #999;
+
+    border-radius:6px;
+
+}
+
+/* Teclado */
+
+#teclado{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:4px;
+
+}
+
+#teclado button{
+
+    height:42px;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    border:none;
+
+    border-radius:5px;
+
+    cursor:pointer;
+
+    background:#e5e5e5;
+
+    transition:.2s;
+
+}
+
+#teclado button:hover{
+
+    background:#d0d0d0;
+
+}
+
+/* Botões */
+
+#btnInserir,
+#btnLimparFila{
+
+    width:100%;
+
+    height:40px;
+
+    margin-top:8px;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    border:none;
+
+    border-radius:5px;
+
+    cursor:pointer;
+
+}
+
+#btnInserir{
+
+    background:#1976D2;
+
+    color:white;
+
+}
+
+#btnInserir:hover{
+
+    background:#125ca8;
+
+}
+
+#btnLimparFila{
+
+    background:#D32F2F;
+
+    color:white;
+
+}
+
+#btnLimparFila:hover{
+
+    background:#b71c1c;
+
+}
+
+/* Área da fila */
+
+.conteudo{
+
+    flex:1;
+
+    background:white;
+
+    border-radius:8px;
+
+    padding:10px;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.15);
+
+}
+
+.conteudo h3{
+
+    margin-bottom:10px;
+
+    color:#003366;
+
+}
+
+/* Fila */
+
+#fila{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:5px;
+
+}
+
+/* Células */
+
+.item{
+
+    width:50px;
+
+    height:50px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+    border-radius:3px;
+
+    color:white;
+
+    box-shadow:0 1px 4px rgba(0,0,0,.25);
+
+    transition:.25s;
+
+}
+
+.item:hover{
+
+    transform:scale(1.08);
+
+}
