@@ -29,28 +29,23 @@ function digitar(n){
 function atualizarVisor(){
 
     if(numero.length==0){
-
         visor.value="";
-
         return;
-
     }
 
+
+
     if(numero.length==1){
-
-        visor.value=numero+".0";
-
+        visor.value=numero+"0.";
         return;
-
     }
 
     let inteiro=numero.slice(0,-1);
-
     let decimal=numero.slice(-1);
 
     visor.value=inteiro+"."+decimal;
-
 }
+
 
 function apagar(){
 
@@ -92,11 +87,12 @@ function obterCor(valor){
 
     if(valor>=10) return "greenyellow";
 
-    if(valor>=4) return "SpringGreen";
+    if(valor>=4) return "lime";
 
-    if(valor>=1.5) return "Lime";
+    if(valor>=2.5) return "yellow";
 
     return "Red";
+
 
 }
 
@@ -154,4 +150,87 @@ function carregar(){
 
 carregar();
 
+function excluirUltimo() {
+    if (fila.length === 0) return;
 
+    fila.shift();      // Remove o último inserido
+    salvar();
+    desenhar();
+}
+document.addEventListener("keydown", function(e){
+
+    if(e.key >= "0" && e.key <= "9"){
+        digitar(e.key);
+    }
+
+    if(e.key === "Backspace"){
+        apagar();
+    }
+
+    if(e.key === "Delete"){
+        limpar();
+    }
+
+    if(e.key === "Enter"){
+        inserir();
+    }
+});
+
+function analisarFaixa(min, max){
+
+    let posicoes = [];
+
+    // Inverte a fila para analisar em ordem cronológica
+    let dados = [...fila].reverse();
+
+    dados.forEach((valor, indice)=>{
+        if(valor >= min && valor < max){
+            posicoes.push(indice);
+        }
+    });
+
+    let intervalos = [];
+
+    for(let i=1; i<posicoes.length; i++){
+        intervalos.push(posicoes[i]-posicoes[i-1]);
+    }
+
+    return {
+        faixa: min.toFixed(2)+" até "+max.toFixed(2),
+        ocorrencias: posicoes.length,
+        intervalos
+    };
+}
+function gerarRelatorio(){
+
+    const faixas = [
+        [5,10],
+        [10,15],
+        [15,20],
+        [20,25],
+        [25,30],
+        [30,40],
+        [40,50],
+        [50,100],
+        [100,9999]
+    ];
+
+    let texto="";
+
+    faixas.forEach(f=>{
+
+        let r = analisarFaixa(f[0],f[1]);
+
+        texto+="=================================\n";
+        texto+=r.faixa+"\n";
+        texto+="Ocorrências: "+r.ocorrencias+"\n";
+        texto+="Intervalos:\n";
+
+        texto+=r.intervalos.join(" - ");
+
+        texto+="\n\n";
+    });
+
+    console.log(texto);
+    alert(texto);
+}
