@@ -102,8 +102,10 @@ body{
 
 /* Botões */
 
+#btnExcluir,
 #btnInserir,
-#btnLimparFila{
+#btnLimparFila,
+#btnRelatorio{
 
     width:100%;
 
@@ -122,7 +124,16 @@ body{
     cursor:pointer;
 
 }
+#btnExcluir:hover{
+    background:#b71c1c;
+}
+#btnExcluir{
 
+    background:#a7d219;
+
+    color:white;
+
+}
 #btnInserir{
 
     background:#1976D2;
@@ -147,7 +158,21 @@ body{
 
 #btnLimparFila:hover{
 
-    background:#b71c1c;
+    background:#64b71c;
+
+}
+
+#btnRelatorio{
+
+    background:#FF9800;
+
+    color:white;
+
+}
+
+#btnRelatorio:hover{
+
+    background:#F57C00;
 
 }
 
