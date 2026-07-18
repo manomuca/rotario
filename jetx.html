@@ -23,7 +23,7 @@
             type="text"
             id="visor"
             readonly
-            placeholder="0.0">
+            placeholder="0.00">
 
         <div id="teclado">
 
@@ -49,14 +49,20 @@
             INSERIR
         </button>
 
-        <button id="btnLimparFila" onclick="limparFila()">
-            LIMPAR FILA
-        </button>
+    <button id="btnLimparFila" onclick="limparFila()">LIMPAR FILA
+    </button>
 <button id="btnExcluir" onclick="excluirUltimo()">
     Excluir Último
 </button>
-    </div>
+<button id="btnRelatorio" onclick="gerarRelatorio()">
+    Relatório
+</button>
 
+    </div>
+<textarea id="relatorio"
+          rows="12"
+          cols="60"
+          readonly></textarea>
     <!-- Painel direito -->
 
     <div class="conteudo">

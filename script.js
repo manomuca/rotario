@@ -17,7 +17,7 @@ function limparFila(){
 let numero="";
 
 let fila=[];
-
+let historico = [];
 function digitar(n){
 
     numero+=n;
@@ -70,7 +70,7 @@ function inserir(){
     let valor=parseFloat(visor.value);
 
     fila.unshift(valor);
-
+    registrarHistorico(valor);
     salvar();
 
     desenhar();
@@ -78,49 +78,54 @@ function inserir(){
     limpar();
 
 }
-
 function obterCor(valor){
 
-    if(valor>=25) return "Purple";
+    if(valor >= 30) return "Purple";
 
-    if(valor>=16) return "Green";
+    if(valor >= 20) return "lime";
 
-    if(valor>=10) return "greenyellow";
+    if(valor >= 5) return "GreenYellow";
 
-    if(valor>=4) return "lime";
+    if(valor >= 2.5) return "yellow";
 
-    if(valor>=2.5) return "yellow";
+    if(valor >= 1.5) return "#757373";
 
-    return "Red";
+    return "#757373";
 
+}
+
+function obterCorTexto(valor){
+
+    if(valor >= 30) return "white";
+
+    if(valor >= 20) return "white";
+
+    if(valor >= 5) return "black";
+
+    if(valor >= 2.5) return "black";
+
+    if(valor >= 1.5) return "lime";
+
+    return "red";
 
 }
 
 function desenhar(){
 
-    let div=document.getElementById("fila");
+    let div = document.getElementById("fila");
 
-    div.innerHTML="";
+    div.innerHTML = "";
 
     fila.forEach((valor)=>{
 
-        let item=document.createElement("div");
+        let item = document.createElement("div");
 
-        item.className="item";
+        item.className = "item";
 
-        item.style.background=obterCor(valor);
+        item.style.background = obterCor(valor);
+        item.style.color = obterCorTexto(valor);
 
-        if(valor>=1.5 && valor<20){
-
-            item.style.color="black";
-
-        }else{
-
-            item.style.color="white";
-
-        }
-
-        item.innerHTML=valor.toFixed(1);
+        item.innerHTML = valor.toFixed(1);
 
         div.appendChild(item);
 
@@ -176,61 +181,53 @@ document.addEventListener("keydown", function(e){
     }
 });
 
-function analisarFaixa(min, max){
-
-    let posicoes = [];
-
-    // Inverte a fila para analisar em ordem cronológica
-    let dados = [...fila].reverse();
-
-    dados.forEach((valor, indice)=>{
-        if(valor >= min && valor < max){
-            posicoes.push(indice);
-        }
-    });
-
-    let intervalos = [];
-
-    for(let i=1; i<posicoes.length; i++){
-        intervalos.push(posicoes[i]-posicoes[i-1]);
-    }
-
-    return {
-        faixa: min.toFixed(2)+" até "+max.toFixed(2),
-        ocorrencias: posicoes.length,
-        intervalos
-    };
-}
 function gerarRelatorio(){
 
-    const faixas = [
-        [5,10],
-        [10,15],
-        [15,20],
-        [20,25],
-        [25,30],
-        [30,40],
-        [40,50],
-        [50,100],
-        [100,9999]
-    ];
+    let txt = document.getElementById("relatorio");
 
-    let texto="";
+    txt.value = "";
 
-    faixas.forEach(f=>{
+    let anterior = null;
 
-        let r = analisarFaixa(f[0],f[1]);
+    historico.forEach(item=>{
 
-        texto+="=================================\n";
-        texto+=r.faixa+"\n";
-        texto+="Ocorrências: "+r.ocorrencias+"\n";
-        texto+="Intervalos:\n";
+        let d = item.data;
 
-        texto+=r.intervalos.join(" - ");
+        let hora =
+            String(d.getHours()).padStart(2,"0")+":"+
+            String(d.getMinutes()).padStart(2,"0")+":"+
+            String(d.getSeconds()).padStart(2,"0");
+        if(anterior){
 
-        texto+="\n\n";
+            let intervalo = item.posicao - anterior.posicao;
+
+            txt.value += "   Intervalo: ";
+            txt.value += intervalo;
+            txt.value += " jogadas";
+ txt.value += "\n";
+        }
+        txt.value += item.valor.toFixed(2);
+        txt.value += "   ";
+        txt.value += hora;
+
+
+
+        txt.value += "\n";
+
+        anterior = item;
+
     });
 
-    console.log(texto);
-    alert(texto);
+}
+
+function registrarHistorico(valor){
+
+    if(valor < 30) return;
+
+    historico.unshift({
+        valor: valor,
+        data: new Date(),
+         posicao: fila.length
+    });
+
 }
