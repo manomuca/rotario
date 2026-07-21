@@ -17,7 +17,7 @@ function limparFila(){
 let numero="";
 
 let fila=[];
-let historico = [];
+//let historico = [];
 function digitar(n){
 
     numero+=n;
@@ -69,12 +69,15 @@ function inserir(){
 
     let valor=parseFloat(visor.value);
 
-    fila.unshift(valor);
-    registrarHistorico(valor);
+fila.unshift({
+    valor: valor,
+    data: new Date()
+});    
+    //registrarHistorico(valor);
     salvar();
 
     desenhar();
-
+    gerarRelatorio();  
     limpar();
 
 }
@@ -113,21 +116,25 @@ function obterCorTexto(valor){
 function desenhar(){
 
     let div = document.getElementById("fila");
-
+    
     div.innerHTML = "";
-
-    fila.forEach((valor)=>{
-
-        let item = document.createElement("div");
-
-        item.className = "item";
-
-        item.style.background = obterCor(valor);
-        item.style.color = obterCorTexto(valor);
-
-        item.innerHTML = valor.toFixed(1);
-
-        div.appendChild(item);
+    
+    fila.forEach((item,indice)=>{
+        
+        let valor = (typeof item === "number") ? item : item.valor;
+        
+        let celula = document.createElement("div");
+        
+        celula.className = "item";
+        
+        celula.style.background = obterCor(valor);
+        celula.style.color = obterCorTexto(valor);
+        
+        celula.innerHTML = valor.toFixed(1);
+    celula.onclick = function () {
+            editarItem(indice);
+        };
+        div.appendChild(celula);
 
     });
 
@@ -141,11 +148,18 @@ function salvar(){
 
 function carregar(){
 
-    let dados=localStorage.getItem("filaValores");
+    let dados = localStorage.getItem("filaValores");
 
     if(dados){
 
-        fila=JSON.parse(dados);
+        fila = JSON.parse(dados);
+
+        // Converte a data de string para Date
+        fila.forEach(item => {
+            if (item.data) {
+                item.data = new Date(item.data);
+            }
+        });
 
         desenhar();
 
@@ -189,45 +203,49 @@ function gerarRelatorio(){
 
     let anterior = null;
 
-    historico.forEach(item=>{
+    fila.forEach((item, indice)=>{
 
-        let d = item.data;
+        if(item.valor < 30) return;
 
         let hora =
-            String(d.getHours()).padStart(2,"0")+":"+
-            String(d.getMinutes()).padStart(2,"0")+":"+
-            String(d.getSeconds()).padStart(2,"0");
-        if(anterior){
+            String(item.data.getHours()).padStart(2,"0")+":"+
+            String(item.data.getMinutes()).padStart(2,"0")+":"+
+            String(item.data.getSeconds()).padStart(2,"0");
 
-            let intervalo = item.posicao - anterior.posicao;
+        if(anterior !== null){
 
-            txt.value += "   Intervalo: ";
-            txt.value += intervalo;
-            txt.value += " jogadas";
- txt.value += "\n";
+            txt.value += "Intervalo: ";
+            txt.value += (anterior - indice);
+            txt.value += " jogadas\n";
+
         }
+
         txt.value += item.valor.toFixed(2);
         txt.value += "   ";
         txt.value += hora;
-
-
-
         txt.value += "\n";
 
-        anterior = item;
+        anterior = indice;
 
     });
 
 }
 
-function registrarHistorico(valor){
+function editarItem(indice){
 
-    if(valor < 30) return;
+    let valor = fila[indice].valor;
 
-    historico.unshift({
-        valor: valor,
-        data: new Date(),
-         posicao: fila.length
-    });
+    numero = Math.round(valor * 10).toString();
+console.log("valor");
+console.log("numero");
+    atualizarVisor();
+
+    fila.splice(indice, 1);
+
+    salvar();
+
+    desenhar();
+
+    gerarRelatorio();
 
 }

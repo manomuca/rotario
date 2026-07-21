@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Fila de Valores</title>
+
 
 <link rel="stylesheet" href="style.css">
 
@@ -15,63 +15,63 @@
 <body>
 
 <div class="container">
+   <div class="lado-esquerdo">
 
-    <!-- Painel esquerdo -->
-    <div class="painel">
-
-        <input
-            type="text"
-            id="visor"
-            readonly
-            placeholder="0.00">
-
-        <div id="teclado">
-
-            <button onclick="digitar(7)">7</button>
-            <button onclick="digitar(8)">8</button>
-            <button onclick="digitar(9)">9</button>
-
-            <button onclick="digitar(4)">4</button>
-            <button onclick="digitar(5)">5</button>
-            <button onclick="digitar(6)">6</button>
-
-            <button onclick="digitar(1)">1</button>
-            <button onclick="digitar(2)">2</button>
-            <button onclick="digitar(3)">3</button>
-
-            <button onclick="digitar(0)">0</button>
-            <button onclick="apagar()">⌫</button>
-            <button onclick="limparVisor()">C</button>
-
+       <!-- Painel esquerdo -->
+       <div class="painel">
+           
+           <input
+           type="text"
+           id="visor"
+           readonly
+           placeholder="0.00">
+           
+           <div id="teclado">
+               
+               
+               
+               <button onclick="digitar(7)">7</button>
+               <button onclick="digitar(8)">8</button>
+               <button onclick="digitar(9)">9</button>
+               
+               <button onclick="digitar(4)">4</button>
+               <button onclick="digitar(5)">5</button>
+               <button onclick="digitar(6)">6</button>
+               
+               <button onclick="digitar(1)">1</button>
+               <button onclick="digitar(2)">2</button>
+               <button onclick="digitar(3)">3</button>
+               
+               <button onclick="digitar(0)">0</button>
+               <button onclick="apagar()">⌫</button>
+               <button onclick="limparVisor()">C</button>
+               
+               
+            </div>
+            
+            
+            
         </div>
-
-        <button id="btnInserir" onclick="inserir()">
-            INSERIR
-        </button>
-
-    <button id="btnLimparFila" onclick="limparFila()">LIMPAR FILA
-    </button>
-<button id="btnExcluir" onclick="excluirUltimo()">
-    Excluir Último
-</button>
-<button id="btnRelatorio" onclick="gerarRelatorio()">
-    Relatório
-</button>
-
+        <textarea id="relatorio"        rows="12"        readonly></textarea>
     </div>
-<textarea id="relatorio"
-          rows="12"
-          cols="60"
-          readonly></textarea>
+    
     <!-- Painel direito -->
-
     <div class="conteudo">
+        
+        <div class="topo">
+            <button id="btnInserir" onclick="inserir()">            INSERIR        </button>
 
-        <h3>Valores</h3>
+            <button id="btnRelatorio" onclick="gerarRelatorio()">Relatório            </button>
 
-        <div id="fila">
+            <button id="btnLimparFila" onclick="limparFila()">Limpar Fila            </button>
+
+            <button id="btnExcluir" onclick="excluirUltimo()">Excluir Último            </button>
 
         </div>
+
+        
+
+        <div id="fila"></div>
 
     </div>
 

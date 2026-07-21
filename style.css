@@ -27,8 +27,7 @@ body{
 /* Painel da calculadora */
 
 .painel{
-
-    width:170px;
+    width:240px;
 
     background:white;
 
@@ -101,11 +100,38 @@ body{
 }
 
 /* Botões */
+.topo{
 
+    display:flex;
+
+    justify-content:center;
+
+    gap:10px;
+
+    margin-bottom:15px;
+
+}
+
+.topo button{
+
+    width:160px;
+
+    margin-top:0;
+
+}
+#relatorio{
+
+    width:100%;
+    min-height:250px;
+    resize:vertical;
+    overflow:auto;
+    padding:8px;
+    font-size:13px;
+}
+#btnRelatorio,
 #btnExcluir,
 #btnInserir,
-#btnLimparFila,
-#btnRelatorio{
+#btnLimparFila{
 
     width:100%;
 
@@ -243,5 +269,16 @@ body{
 .item:hover{
 
     transform:scale(1.08);
+
+}
+.lado-esquerdo{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+    width:240px;
 
 }
