@@ -1,23 +1,30 @@
 
 function limparFila(){
 
-    if(!confirm("Deseja realmente limpar toda a fila?")){
-
+    if(!confirm("Deseja realmente limpar toda a memória?")){
         return;
-
     }
 
-    fila=[];
+    memoria.fill(null);
 
-    localStorage.removeItem("filaValores");
+    ultimo = -1;
+
+    salvar();
 
     desenhar();
 
+    document.getElementById("relatorio").value = "";
+
 }
 let numero="";
+const MAX_POSICOES = 500;
+let indiceEdicao = -1;
+let memoria = new Array(MAX_POSICOES).fill(null);
 
-let fila=[];
-//let historico = [];
+let ultimo = -1;
+let COLUNAS = Number(localStorage.getItem("colunasFila")) || 12;
+//let COLUNAS = 10;
+const TAM = 55;
 function digitar(n){
 
     numero+=n;
@@ -44,6 +51,7 @@ function atualizarVisor(){
     let decimal=numero.slice(-1);
 
     visor.value=inteiro+"."+decimal;
+    
 }
 
 
@@ -64,22 +72,28 @@ function limpar(){
 }
 
 function inserir(){
-
     if(visor.value=="") return;
-
     let valor=parseFloat(visor.value);
 
-fila.unshift({
+if (indiceEdicao != -1) {
+    memoria[indiceEdicao].valor = valor;
+    memoria[indiceEdicao].data = new Date();
+    indiceEdicao = -1;
+} else {
+    memoria[ultimo + 1] = {
     valor: valor,
     data: new Date()
-});    
-    //registrarHistorico(valor);
-    salvar();
-
-    desenhar();
-    gerarRelatorio();  
-    limpar();
-
+    };
+    ultimo++;
+}
+salvar();
+desenhar();
+gerarRelatorio();  
+limpar();
+  if (ultimo >= MAX_POSICOES - 1) {
+        alert("Memória cheia!");
+        return;
+    }
 }
 function obterCor(valor){
 
@@ -114,68 +128,82 @@ function obterCorTexto(valor){
 }
 
 function desenhar(){
+console.log("ultimo =", ultimo, "MAX =", MAX_POSICOES);
+    if (ultimo >= MAX_POSICOES) {
+    ultimo = -1;
+    memoria = new Array(MAX_POSICOES).fill(null);
+}
+    const filaDiv = document.getElementById("fila");
+    filaDiv.innerHTML = "";
+filaDiv.style.position = "relative";
 
-    let div = document.getElementById("fila");
-    
-    div.innerHTML = "";
-    
-    fila.forEach((item,indice)=>{
-        
-        let valor = (typeof item === "number") ? item : item.valor;
-        
+for(let indice = 0; indice <= ultimo; indice++){
+
+    let item = memoria[indice];
+        let valor = item.valor;
         let celula = document.createElement("div");
-        
         celula.className = "item";
-        
         celula.style.background = obterCor(valor);
         celula.style.color = obterCorTexto(valor);
-        
         celula.innerHTML = valor.toFixed(1);
-    celula.onclick = function () {
-            editarItem(indice);
-        };
-        div.appendChild(celula);
+        celula.onclick = () => editarItem(indice);
+        celula.style.position = "absolute";
+        let linha = Math.floor(indice / COLUNAS);
+let coluna = COLUNAS - 1 - (indice % COLUNAS);
 
-    });
+const TAM = 40;
+
+celula.style.left = (coluna * TAM) + "px";
+celula.style.bottom = (linha * TAM) + "px";
+        filaDiv.appendChild(celula);
+
+    };
 
 }
 
+
 function salvar(){
 
-    localStorage.setItem("filaValores",JSON.stringify(fila));
+    localStorage.setItem("memoria", JSON.stringify({
+        memoria: memoria,
+        ultimo: ultimo
+    }));
 
 }
 
 function carregar(){
+document.getElementById("lblColunas").textContent = COLUNAS;
+    let dados = localStorage.getItem("memoria");
 
-    let dados = localStorage.getItem("filaValores");
+    if(!dados) return;
 
-    if(dados){
+    dados = JSON.parse(dados);
 
-        fila = JSON.parse(dados);
+    memoria = dados.memoria;
 
-        // Converte a data de string para Date
-        fila.forEach(item => {
-            if (item.data) {
-                item.data = new Date(item.data);
-            }
-        });
+    ultimo = dados.ultimo;
 
-        desenhar();
-
-    }
+    desenhar();
 
 }
 
 carregar();
 
 function excluirUltimo() {
-    if (fila.length === 0) return;
 
-    fila.shift();      // Remove o último inserido
+    if (ultimo < 0) return;
+
+    memoria[ultimo] = null;
+
+    ultimo--;
+
     salvar();
+
     desenhar();
+
+    gerarRelatorio();
 }
+
 document.addEventListener("keydown", function(e){
 
     if(e.key >= "0" && e.key <= "9"){
@@ -198,54 +226,55 @@ document.addEventListener("keydown", function(e){
 function gerarRelatorio(){
 
     let txt = document.getElementById("relatorio");
-
     txt.value = "";
-
     let anterior = null;
 
-    fila.forEach((item, indice)=>{
+  for (let i = 0; i <= ultimo; i++) {
 
-        if(item.valor < 30) return;
+    let item = memoria[i];
 
+    // gera o relatório
+        if(item.valor < 30) continue;
+        let data = new Date(item.data);
         let hora =
             String(item.data.getHours()).padStart(2,"0")+":"+
             String(item.data.getMinutes()).padStart(2,"0")+":"+
             String(item.data.getSeconds()).padStart(2,"0");
-
         if(anterior !== null){
-
             txt.value += "Intervalo: ";
-            txt.value += (anterior - indice);
+            txt.value += (anterior - i);
             txt.value += " jogadas\n";
-
         }
-
         txt.value += item.valor.toFixed(2);
         txt.value += "   ";
         txt.value += hora;
         txt.value += "\n";
-
-        anterior = indice;
-
-    });
-
+        anterior = i;
+    };
 }
-
 function editarItem(indice){
 
-    let valor = fila[indice].valor;
-
-    numero = Math.round(valor * 10).toString();
-console.log("valor");
-console.log("numero");
+    
+    let item = memoria[indice];
+    
+    numero = item.valor.toFixed(1).replace(".", "");
+    
     atualizarVisor();
+    indiceEdicao = indice;
+    
+    console.log(ultimo);
+    console.log(memoria);
+}
+function alterarColunas(incremento){
 
-    fila.splice(indice, 1);
+    COLUNAS += incremento;
 
-    salvar();
+   if (isNaN(COLUNAS) || COLUNAS < 3) return;
+
+    localStorage.setItem("colunasFila", COLUNAS);
+
+    document.getElementById("lblColunas").innerHTML = COLUNAS;
 
     desenhar();
-
-    gerarRelatorio();
 
 }

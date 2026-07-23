@@ -45,7 +45,7 @@ body{
 
     width:100%;
 
-    height:45px;
+    height:75px;
 
     margin-bottom:10px;
 
@@ -75,7 +75,7 @@ body{
 
 #teclado button{
 
-    height:42px;
+    height:32px;
 
     font-size:18px;
 
@@ -106,9 +106,9 @@ body{
 
     justify-content:center;
 
-    gap:10px;
+    gap:15px;
 
-    margin-bottom:15px;
+    margin-bottom:25px;
 
 }
 
@@ -119,18 +119,59 @@ body{
     margin-top:0;
 
 }
+
+#controleColunas{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:8px;
+
+    margin-top:8px;
+
+}
+
+#controleColunas button{
+
+    width:32px;
+
+    height:32px;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+#lblColunas{
+
+    min-width:45px;
+
+    text-align:center;
+
+    font-weight:bold;
+
+    color:#003366;
+
+}
 #relatorio{
 
     width:100%;
-    min-height:250px;
+    min-height:350px;
     resize:vertical;
     overflow:auto;
-    padding:8px;
+    padding:18px;
     font-size:13px;
 }
 #btnRelatorio,
 #btnExcluir,
 #btnInserir,
+#btnOrganizar,
 #btnLimparFila{
 
     width:100%;
@@ -148,6 +189,16 @@ body{
     border-radius:5px;
 
     cursor:pointer;
+
+}
+#btnOrganizar:hover{
+    background:#152d53;
+}
+#btnOrganizar{
+
+    background:#a7d219;
+
+    color:white;
 
 }
 #btnExcluir:hover{
@@ -214,7 +265,7 @@ body{
 
     padding:10px;
 
-    box-shadow:0 2px 8px rgba(0,0,0,.15);
+    box-shadow:0 2px 4px rgba(0,0,0,.1);
 
 }
 
@@ -227,24 +278,19 @@ body{
 }
 
 /* Fila */
-
 #fila{
-
-    display:flex;
-
-    flex-wrap:wrap;
-
-    gap:5px;
-
+    position: relative;
+    width: 550px;      /* 10 colunas × 55px */
+    min-height: 550px; /* apenas para teste */
 }
 
 /* Células */
 
 .item{
 
-    width:50px;
+    width:40px;
 
-    height:50px;
+    height:40px;
 
     display:flex;
 
@@ -252,23 +298,22 @@ body{
 
     align-items:center;
 
-    font-size:12px;
+    font-size:15px;
 
     font-weight:bold;
 
-    border-radius:3px;
-
+   
     color:white;
 
-    box-shadow:0 1px 4px rgba(0,0,0,.25);
+    box-shadow:0 0px 0px rgba(0,0,0,.1);
 
-    transition:.25s;
+    transition:.15s;
 
 }
 
 .item:hover{
 
-    transform:scale(1.08);
+    transform:scale(.8);
 
 }
 .lado-esquerdo{
@@ -277,7 +322,7 @@ body{
 
     flex-direction:column;
 
-    gap:15px;
+    gap:5px;
 
     width:240px;
 

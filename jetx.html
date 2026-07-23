@@ -62,8 +62,15 @@
             <button id="btnInserir" onclick="inserir()">            INSERIR        </button>
 
             <button id="btnRelatorio" onclick="gerarRelatorio()">Relatório            </button>
+<div id="controleColunas">
 
-            <button id="btnLimparFila" onclick="limparFila()">Limpar Fila            </button>
+    <button onclick="alterarColunas(-1)">−</button>
+
+    <span id="lblColunas"></span>
+
+    <button onclick="alterarColunas(1)">+</button>
+
+</div>            <button id="btnLimparFila" onclick="limparFila()">Limpar Fila            </button>
 
             <button id="btnExcluir" onclick="excluirUltimo()">Excluir Último            </button>
 
