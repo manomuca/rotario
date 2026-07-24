@@ -135,22 +135,27 @@ console.log("ultimo =", ultimo, "MAX =", MAX_POSICOES);
 }
     const filaDiv = document.getElementById("fila");
     filaDiv.innerHTML = "";
-filaDiv.style.position = "relative";
+    const TAM = 40;
+
+let linhas = Math.ceil((ultimo + 1) / COLUNAS);
+
+filaDiv.style.height = (linhas * TAM) + "px";
 
 for(let indice = 0; indice <= ultimo; indice++){
-
+    
     let item = memoria[indice];
-        let valor = item.valor;
-        let celula = document.createElement("div");
-        celula.className = "item";
-        celula.style.background = obterCor(valor);
-        celula.style.color = obterCorTexto(valor);
-        celula.innerHTML = valor.toFixed(1);
-        celula.onclick = () => editarItem(indice);
-        celula.style.position = "absolute";
-        let linha = Math.floor(indice / COLUNAS);
-let coluna = COLUNAS - 1 - (indice % COLUNAS);
-
+    let valor = item.valor;
+    let celula = document.createElement("div");
+    celula.className = "item";
+    celula.style.background = obterCor(valor);
+    celula.style.color = obterCorTexto(valor);
+    celula.innerHTML = valor.toFixed(1);
+    celula.onclick = () => editarItem(indice);
+    celula.style.position = "absolute";
+    let linha = Math.floor(indice / COLUNAS);
+    let coluna = COLUNAS - 1 - (indice % COLUNAS);
+    
+    filaDiv.style.position = "relative";
 const TAM = 40;
 
 celula.style.left = (coluna * TAM) + "px";
@@ -172,7 +177,9 @@ function salvar(){
 }
 
 function carregar(){
-document.getElementById("lblColunas").textContent = COLUNAS;
+
+    document.getElementById("lblColunas").textContent = COLUNAS;
+
     let dados = localStorage.getItem("memoria");
 
     if(!dados) return;
@@ -182,6 +189,17 @@ document.getElementById("lblColunas").textContent = COLUNAS;
     memoria = dados.memoria;
 
     ultimo = dados.ultimo;
+
+    // Reconverte as datas para objetos Date
+    for(let i = 0; i <= ultimo; i++){
+
+        if(memoria[i] != null){
+
+            memoria[i].data = new Date(memoria[i].data);
+
+        }
+
+    }
 
     desenhar();
 
@@ -222,35 +240,44 @@ document.addEventListener("keydown", function(e){
         inserir();
     }
 });
-
 function gerarRelatorio(){
 
     let txt = document.getElementById("relatorio");
     txt.value = "";
+
+let hoje = new Date();
+
+let data =
+    String(hoje.getDate()).padStart(2,"0") + "/" +
+    String(hoje.getMonth() + 1).padStart(2,"0") + "/" +
+    hoje.getFullYear();
+
+txt.value += "Hora\tValor\tIntervalo\n";    // Cabeçalho
+    
     let anterior = null;
-
-  for (let i = 0; i <= ultimo; i++) {
-
-    let item = memoria[i];
-
-    // gera o relatório
+    
+    for(let i = 0; i <= ultimo; i++){
+        
+        let item = memoria[i];
+        
+        if(item == null) continue;
         if(item.valor < 30) continue;
+        
         let data = new Date(item.data);
+        
         let hora =
-            String(item.data.getHours()).padStart(2,"0")+":"+
-            String(item.data.getMinutes()).padStart(2,"0")+":"+
-            String(item.data.getSeconds()).padStart(2,"0");
-        if(anterior !== null){
-            txt.value += "Intervalo: ";
-            txt.value += (anterior - i);
-            txt.value += " jogadas\n";
-        }
-        txt.value += item.valor.toFixed(2);
-        txt.value += "   ";
-        txt.value += hora;
+        String(data.getHours()).padStart(2,"0")+":"+
+        String(data.getMinutes()).padStart(2,"0")+":"+
+        String(data.getSeconds()).padStart(2,"0");
+        
+        txt.value += hora + "\t";
+        txt.value += item.valor.toFixed(2) + "\t";
+        txt.value += (anterior == null ? "" : i - anterior);
         txt.value += "\n";
+
         anterior = i;
-    };
+    }
+
 }
 function editarItem(indice){
 

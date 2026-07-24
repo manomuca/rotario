@@ -280,10 +280,21 @@ body{
 /* Fila */
 #fila{
     position: relative;
-    width: 550px;      /* 10 colunas × 55px */
-    min-height: 550px; /* apenas para teste */
+    width: 550px;      /* 10 colunas × 55px     min-height: 650px; /* apenas para teste */
 }
+#areaFila{
 
+    width:550px;
+
+    height:650px;
+
+    overflow-y:auto;
+
+    overflow-x:hidden;
+
+    border:1px solid #ccc;
+
+}
 /* Células */
 
 .item{
