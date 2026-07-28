@@ -20,11 +20,12 @@ let numero="";
 const MAX_POSICOES = 500;
 let indiceEdicao = -1;
 let memoria = new Array(MAX_POSICOES).fill(null);
-
+let grafico = null;
 let ultimo = -1;
 let COLUNAS = Number(localStorage.getItem("colunasFila")) || 12;
 //let COLUNAS = 10;
 const TAM = 55;
+
 function digitar(n){
 
     numero+=n;
@@ -96,15 +97,12 @@ limpar();
     }
 }
 function obterCor(valor){
-
-    if(valor >= 30) return "Purple";
-
-    if(valor >= 20) return "lime";
-
-    if(valor >= 5) return "GreenYellow";
-
+    if(valor >= 120) return "#7b0d5a";
+    if(valor >= 60) return "#ed0d89";
+    if(valor >= 30) return "#0ded14";
+    if(valor >= 15) return "GreenYellow";
+    if(valor >= 7) return "#f5d209";
     if(valor >= 2.5) return "yellow";
-
     if(valor >= 1.5) return "#757373";
 
     return "#757373";
@@ -245,39 +243,30 @@ function gerarRelatorio(){
     let txt = document.getElementById("relatorio");
     txt.value = "";
 
-let hoje = new Date();
+    // Cabeçalho
+    txt.value += "Data/Hora\tValor\tIntervalo\n";
 
-let data =
-    String(hoje.getDate()).padStart(2,"0") + "/" +
-    String(hoje.getMonth() + 1).padStart(2,"0") + "/" +
-    hoje.getFullYear();
-
-txt.value += "Hora\tValor\tIntervalo\n";    // Cabeçalho
-    
     let anterior = null;
-    
+
     for(let i = 0; i <= ultimo; i++){
-        
+
         let item = memoria[i];
-        
+
         if(item == null) continue;
         if(item.valor < 30) continue;
-        
+
         let data = new Date(item.data);
-        
-        let hora =
-        String(data.getHours()).padStart(2,"0")+":"+
-        String(data.getMinutes()).padStart(2,"0")+":"+
-        String(data.getSeconds()).padStart(2,"0");
-        
-        txt.value += hora + "\t";
-        txt.value += item.valor.toFixed(2) + "\t";
-        txt.value += (anterior == null ? "" : i - anterior);
+
+        txt.value += formatarDataHora(data);
+        txt.value += "\t";
+        txt.value += item.valor.toFixed(2);
+        txt.value += "\t";
+        txt.value += (anterior == null ? "" : (i - anterior));
         txt.value += "\n";
 
         anterior = i;
     }
-
+gerarGrafico();
 }
 function editarItem(indice){
 
@@ -303,5 +292,193 @@ function alterarColunas(incremento){
     document.getElementById("lblColunas").innerHTML = COLUNAS;
 
     desenhar();
+
+}
+function formatarDataHora(data){
+
+    return String(data.getDate()).padStart(2,"0") + "/" +
+           String(data.getMonth() + 1).padStart(2,"0") + "/" +
+           data.getFullYear() + " " +
+           String(data.getHours()).padStart(2,"0") + ":" +
+           String(data.getMinutes()).padStart(2,"0") + ":" +
+           String(data.getSeconds()).padStart(2,"0");
+
+}
+function gerarGrafico(){
+ let dias = [];
+    let pontos = [];
+
+    let anterior = null;
+let yMin = Infinity;
+let yMax = -Infinity;
+    // Monta os pontos
+    for(let i = 0; i <= ultimo; i++){
+
+        let item = memoria[i];
+
+        if(item == null) continue;
+        if(item.valor < 30) continue;
+
+        let data = new Date(item.data);
+
+        let dia =
+            String(data.getDate()).padStart(2,"0") + "/" +
+            String(data.getMonth()+1).padStart(2,"0");
+
+        // adiciona o dia na lista apenas uma vez
+        if(!dias.includes(dia)){
+            dias.push(dia);
+        }
+  
+        let indiceDia = dias.indexOf(dia);
+
+        let hora =
+  
+    data.getHours()*60 +
+    data.getMinutes() +
+    data.getSeconds()/60;
+yMin = Math.min(yMin, hora);
+yMax = Math.max(yMax, hora);
+        pontos.push({
+
+            x: indiceDia,
+
+            y: hora,
+
+            valor: item.valor,
+
+            intervalo: (anterior == null ? null : i - anterior),
+
+            cor: obterCor(item.valor),
+
+            data: data
+
+        });
+
+        anterior = i;
+
+    }
+
+    if(grafico){
+        grafico.destroy();
+    }
+
+    let ctx = document.getElementById("grafico");
+
+    grafico = new Chart(ctx,{
+
+        type:"scatter",
+
+        data:{
+
+            datasets:[{
+
+                label:"Ocorrências",
+
+                data:pontos,
+
+                pointRadius:3,
+
+                pointBackgroundColor:pontos.map(p=>p.cor),
+
+                pointBorderColor:"#000",
+
+                pointBorderWidth:1
+
+            }]
+
+        },
+
+        options:{
+
+            responsive:true,
+
+plugins:{
+
+    legend:{
+        display:false
+    },
+
+tooltip:{
+
+    callbacks:{
+
+        label:function(context){
+
+            let p = context.raw;
+
+            if (p.intervalo == null) {
+                return [
+                    "Primeira ocorrência",
+                    "Valor: " + p.valor.toFixed(1)
+                ];
+            }
+
+            return [
+                "Ocorrência: " + p.intervalo,
+                "Valor: " + p.valor.toFixed(1)
+            ];
+
+        }
+
+    }
+
+},
+
+},
+
+            scales:{
+
+                x:{
+
+                    type:"linear",
+
+                    min:-0.5,
+
+                    max:dias.length-0.5,
+
+                    ticks:{
+
+                        stepSize:1,
+
+                        callback:function(value){
+
+                            return dias[value] ?? "";
+
+                        }
+
+                    }
+
+                },
+
+                y:{
+
+min: Math.floor(yMin) - 1,
+
+max: Math.ceil(yMax) + 1,
+
+                    ticks:{
+
+                        stepSize:1,
+
+callback: function(value) {
+
+    let horas = Math.floor(value / 60);
+    let minutos = Math.floor(value % 60);
+
+    return String(horas).padStart(2, "0") + ":" +
+           String(minutos).padStart(2, "0");
+
+}
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
 
 }

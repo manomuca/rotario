@@ -5,9 +5,8 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 <link rel="stylesheet" href="style.css">
 
 </head>
@@ -15,74 +14,69 @@
 <body>
 
 <div class="container">
-   <div class="lado-esquerdo">
-
-       <!-- Painel esquerdo -->
-       <div class="painel">
-           
-           <input
-           type="text"
-           id="visor"
-           readonly
-           placeholder="0.00">
-           
-           <div id="teclado">
-               
-               
-               
-               <button onclick="digitar(7)">7</button>
-               <button onclick="digitar(8)">8</button>
-               <button onclick="digitar(9)">9</button>
-               
-               <button onclick="digitar(4)">4</button>
-               <button onclick="digitar(5)">5</button>
-               <button onclick="digitar(6)">6</button>
-               
-               <button onclick="digitar(1)">1</button>
-               <button onclick="digitar(2)">2</button>
-               <button onclick="digitar(3)">3</button>
-               
-               <button onclick="digitar(0)">0</button>
-               <button onclick="apagar()">⌫</button>
-               <button onclick="limparVisor()">C</button>
-               
-               
-            </div>
-            
-            
-            
-        </div>
-        <textarea id="relatorio"        rows="12"        readonly></textarea>
+    <div id="graficoArea">
+        <canvas id="grafico"></canvas>
     </div>
-    
-    <!-- Painel direito -->
-    <div class="conteudo">
+    <!--         grafico -->
+
+    <!-- Painel esquerdo -->
+     <div class="painel">
         
-        <div class="topo">
+        <input
+        type="text"
+        id="visor"
+        readonly
+        placeholder="0.00">           
+        <div id="teclado">
+            <button onclick="digitar(7)">7</button>
+            <button onclick="digitar(8)">8</button>
+            <button onclick="digitar(9)">9</button>
+            
+            <button onclick="digitar(4)">4</button>
+            <button onclick="digitar(5)">5</button>
+            <button onclick="digitar(6)">6</button>
+            
+            <button onclick="digitar(1)">1</button>
+            <button onclick="digitar(2)">2</button>
+            <button onclick="digitar(3)">3</button>
+            
+            <button onclick="digitar(0)">0</button>
+            <button onclick="apagar()">⌫</button>
+            <button onclick="limparVisor()">C</button>
+                           
+         </div>          
+                     
+         <textarea id="relatorio"        rows="12"        readonly></textarea>
+     </div>        <!-- Painel direito -->
+<div class="coluna-esquerda">       
+    <div class="lado-esquerdo">
+
+
+ 
+                    <div class="conteudo">      
+                                <div class="topo">
             <button id="btnInserir" onclick="inserir()">            INSERIR        </button>
-
             <button id="btnRelatorio" onclick="gerarRelatorio()">Relatório            </button>
-<div id="controleColunas">
-
-    <button onclick="alterarColunas(-1)">−</button>
-
-    <span id="lblColunas"></span>
-
-    <button onclick="alterarColunas(1)">+</button>
-
-</div>            <button id="btnLimparFila" onclick="limparFila()">Limpar Fila            </button>
-
+            <div id="controleColunas">
+                <button onclick="alterarColunas(-1)">−</button>
+                <span id="lblColunas"></span>
+                <button onclick="alterarColunas(1)">+</button>
+            </div>           
+            <button id="btnLimparFila" onclick="limparFila()">Limpar Fila            </button>
             <button id="btnExcluir" onclick="excluirUltimo()">Excluir Último            </button>
+            
+        </div> 
+            <div id="areaFila">
+                <div id="fila"></div>
+            </div>
+        </div> 
+    </div>    <!-- fecha lado-esquerdo -->
 
-        </div>
+    </div> 
+    
+</div> <!-- fecha coluna-esquerda -->
 
-        
 
-        <div id="fila"></div>
-
-    </div>
-
-</div>
 
 <script src="script.js"></script>
 

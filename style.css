@@ -16,18 +16,20 @@ body{
 
 .container{
 
-    display:flex;
+    display:grid;
+
+    grid-template-columns:25% 240px 1fr;
 
     gap:15px;
 
-    align-items:flex-start;
+    height:calc(100vh - 30px);
 
 }
 
 /* Painel da calculadora */
 
 .painel{
-    width:240px;
+    width: 100%;
 
     background:white;
 
@@ -161,8 +163,12 @@ body{
 }
 #relatorio{
 
+ 
     width:100%;
-    min-height:350px;
+
+    height:250px;
+
+    min-height:250px;
     resize:vertical;
     overflow:auto;
     padding:18px;
@@ -257,7 +263,11 @@ body{
 
 .conteudo{
 
-    flex:1;
+    display:grid;
+
+    grid-template-rows:auto 1fr;
+
+    gap:10px;
 
     background:white;
 
@@ -267,30 +277,22 @@ body{
 
     box-shadow:0 2px 4px rgba(0,0,0,.1);
 
-}
-
-.conteudo h3{
-
-    margin-bottom:10px;
-
-    color:#003366;
+    overflow:hidden;
 
 }
 
 /* Fila */
 #fila{
     position: relative;
-    width: 550px;      /* 10 colunas × 55px     min-height: 650px; /* apenas para teste */
+    min-width: 550px;      /* 10 colunas × 55px     min-height: 650px; /* apenas para teste */
 }
 #areaFila{
 
-    width:550px;
+    width:100%;
 
-    height:650px;
+    height:100%;
 
-    overflow-y:auto;
-
-    overflow-x:hidden;
+    overflow:auto;
 
     border:1px solid #ccc;
 
@@ -333,8 +335,32 @@ body{
 
     flex-direction:column;
 
-    gap:5px;
+    gap:10px;
 
-    width:240px;
+}
+#graficoArea{
+
+    background:white;
+
+    border-radius:8px;
+
+    padding:10px;
+
+    box-shadow:0 2px 4px rgba(0,0,0,.1);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    overflow:auto;
+
+}
+#grafico{
+
+    max-width:100%;
+
+    max-height:100%;
 
 }
