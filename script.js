@@ -134,30 +134,29 @@ console.log("ultimo =", ultimo, "MAX =", MAX_POSICOES);
     const filaDiv = document.getElementById("fila");
     filaDiv.innerHTML = "";
     const TAM = 40;
-
-let linhas = Math.ceil((ultimo + 1) / COLUNAS);
-
-filaDiv.style.height = (linhas * TAM) + "px";
-
-for(let indice = 0; indice <= ultimo; indice++){
+    let linhas = Math.ceil((ultimo + 1) / COLUNAS);
     
-    let item = memoria[indice];
-    let valor = item.valor;
-    let celula = document.createElement("div");
-    celula.className = "item";
-    celula.style.background = obterCor(valor);
-    celula.style.color = obterCorTexto(valor);
-    celula.innerHTML = valor.toFixed(1);
-    celula.onclick = () => editarItem(indice);
-    celula.style.position = "absolute";
-    let linha = Math.floor(indice / COLUNAS);
-    let coluna = COLUNAS - 1 - (indice % COLUNAS);
+    filaDiv.style.height = (linhas * TAM) + "px";
     
-    filaDiv.style.position = "relative";
-const TAM = 40;
-
-celula.style.left = (coluna * TAM) + "px";
-celula.style.bottom = (linha * TAM) + "px";
+    for(let indice = 0; indice <= ultimo; indice++){
+        
+        let item = memoria[indice];
+        let valor = item.valor;
+        let celula = document.createElement("div");
+        celula.className = "item";
+        celula.style.background = obterCor(valor);
+        celula.style.color = obterCorTexto(valor);
+        celula.innerHTML = valor.toFixed(1);
+        celula.onclick = () => editarItem(indice);
+        celula.style.position = "absolute";
+        let linha = Math.floor(indice / COLUNAS);
+        let coluna = COLUNAS - 1 - (indice % COLUNAS);
+        
+        filaDiv.style.position = "relative";
+        const TAM = 40;
+        
+        celula.style.left = (coluna * TAM) + "px";
+        celula.style.bottom = (linha * TAM) + "px";
         filaDiv.appendChild(celula);
 
     };
@@ -180,10 +179,10 @@ function carregar(){
 
     let dados = localStorage.getItem("memoria");
 
+    console.log(dados);
     if(!dados) return;
 
     dados = JSON.parse(dados);
-
     memoria = dados.memoria;
 
     ultimo = dados.ultimo;
