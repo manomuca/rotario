@@ -179,10 +179,10 @@ function carregar(){
 
     let dados = localStorage.getItem("memoria");
 
-    console.log(dados);
     if(!dados) return;
-
+    
     dados = JSON.parse(dados);
+    console.log(dados);
     memoria = dados.memoria;
 
     ultimo = dados.ultimo;
@@ -339,25 +339,20 @@ let yMax = -Infinity;
 yMin = Math.min(yMin, hora);
 yMax = Math.max(yMax, hora);
         pontos.push({
-
             x: indiceDia,
-
             y: hora,
-
             valor: item.valor,
-
             intervalo: (anterior == null ? null : i - anterior),
-
             cor: obterCor(item.valor),
-
             data: data
-
         });
-
         anterior = i;
-
     }
+let intervalo = yMax - yMin; // minutos
 
+let altura = Math.max(300, intervalo * 4);
+
+document.getElementById("graficoArea").style.height = altura + "px";
     if(grafico){
         grafico.destroy();
     }
