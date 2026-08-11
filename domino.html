@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dominó - Ponta de Cinco</title>
+
+    <link rel="stylesheet" href="estyle.css">
+</head>
+
+<body>
+
+    <main class="container">
+
+        <header>
+            <h1>🁫 Dominó</h1>
+            <p>Ponta de Cinco</p>
+        </header>
+
+
+        <!-- =========================
+             PLACAR
+        ========================== -->
+
+        <section class="placar">
+
+            <div class="jogador-card" id="cardJogador1">
+
+                <input
+                    type="text"
+                    id="nomeJogador1"
+                    value="Jogador 1"
+                    class="nome-jogador"
+                >
+
+                <div
+                    class="pontuacao"
+                    id="pontuacaoJogador1">
+                    0
+                </div>
+
+                <div class="barra">
+                    <div
+                        class="progresso"
+                        id="progressoJogador1">
+                    </div>
+                </div>
+
+                <small>Meta: 500</small>
+
+            </div>
+
+
+            <div class="vs">
+                VS
+            </div>
+
+
+            <div class="jogador-card" id="cardJogador2">
+
+                <input
+                    type="text"
+                    id="nomeJogador2"
+                    value="Jogador 2"
+                    class="nome-jogador"
+                >
+
+                <div
+                    class="pontuacao"
+                    id="pontuacaoJogador2">
+                    0
+                </div>
+
+                <div class="barra">
+                    <div
+                        class="progresso"
+                        id="progressoJogador2">
+                    </div>
+                </div>
+
+                <small>Meta: 500</small>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             NOVA MÃO
+        ========================== -->
+
+        <section class="painel">
+
+            <h2>Nova mão</h2>
+
+
+            <div class="campo">
+
+                <label>Quem bateu?</label>
+
+                <div class="botoes-jogador">
+
+                    <button
+                        id="btnJogador1"
+                        class="btn-jogador"
+                        onclick="selecionarJogador(1)">
+                        Jogador 1
+                    </button>
+
+                    <button
+                        id="btnJogador2"
+                        class="btn-jogador"
+                        onclick="selecionarJogador(2)">
+                        Jogador 2
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="campo">
+
+                <label>
+                    Pedras restantes do adversário
+                </label>
+
+                <div
+                    id="pedrasSelecionadas"
+                    class="pedras-selecionadas">
+                </div>
+
+            </div>
+
+
+            <!-- TECLADO DE PEDRAS -->
+
+            <div class="selecao-pedra">
+
+                <h3>Adicionar pedra</h3>
+
+                <div class="pedra-input">
+
+                    <select id="ladoA">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+
+                    <span>|</span>
+
+                    <select id="ladoB">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+
+                    <button
+                        onclick="adicionarPedra()"
+                        class="btn-adicionar">
+                        + Adicionar
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- RESULTADO -->
+
+            <div class="resultado">
+
+                <div>
+                    <span>Total das pedras</span>
+                    <strong id="totalPedras">0</strong>
+                </div>
+
+                <div>
+                    <span>Arredondado</span>
+                    <strong id="totalArredondado">0</strong>
+                </div>
+
+                <div class="resultado-final">
+
+                    <span>Pontos da mão</span>
+
+                    <strong id="pontosMao">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <button
+                id="btnRegistrar"
+                class="btn-registrar"
+                onclick="registrarMao()">
+
+                REGISTRAR MÃO
+
+            </button>
+
+        </section>
+
+
+        <!-- =========================
+             HISTÓRICO
+        ========================== -->
+
+        <section class="painel">
+
+            <div class="titulo-historico">
+
+                <h2>Histórico</h2>
+
+                <span id="contadorMaos">
+                    0 mãos
+                </span>
+
+            </div>
+
+
+            <div class="tabela-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Mão</th>
+                            <th>Jogador 1</th>
+                            <th>Jogador 2</th>
+                            <th>Pedras</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="historico">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             CONTROLES
+        ========================== -->
+
+        <section class="controles">
+
+            <button
+                onclick="desfazerMao()"
+                class="btn-secundario">
+
+                ↶ Desfazer última mão
+
+            </button>
+
+
+            <button
+                onclick="novaPartida()"
+                class="btn-perigo">
+
+                Nova partida
+
+            </button>
+
+        </section>
+
+
+        <!-- =========================
+             MODAL VENCEDOR
+        ========================== -->
+
+        <div
+            id="modalVencedor"
+            class="modal">
+
+            <div class="modal-conteudo">
+
+                <div class="trofeu">
+                    🏆
+                </div>
+
+                <h2>Fim de jogo!</h2>
+
+                <p id="textoVencedor"></p>
+
+                <button
+                    onclick="novaPartida()"
+                    class="btn-registrar">
+
+                    NOVA PARTIDA
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script src="escript.js"></script>
+
+</body>
+</html>
