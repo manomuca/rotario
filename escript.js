@@ -6,7 +6,7 @@
 /* =========================================
    ESTADO DO JOGO
 ========================================= */
-
+let valorManual = "";
 let jogo = {
     jogadores: {
         1: {
@@ -107,7 +107,7 @@ function adicionarPedra() {
 
 
     jogo.pedras.push(pedra);
-
+atualizarDisplayTotal();
     atualizarPedras();
 
     atualizarResultado();
@@ -180,6 +180,11 @@ function atualizarPedras() {
 ========================================= */
 
 function calcularTotalPedras() {
+
+
+
+    // Caso contrário, utiliza o sistema
+    // tradicional das pedras.
 
     return jogo.pedras.reduce(
         (total, pedra) => {
@@ -366,6 +371,7 @@ function limparMao() {
 
     jogo.jogadorBateu = null;
 
+    valorManual = "";
 
     document
         .getElementById("btnJogador1")
@@ -378,7 +384,7 @@ function limparMao() {
 
 
     atualizarPedras();
-
+atualizarDisplayTotal();
     atualizarResultado();
 
 }
@@ -724,4 +730,78 @@ function carregarJogo() {
 
     }
 
+}
+/* =========================================
+   TECLADO NUMÉRICO
+========================================= */
+
+function digitarNumero(numero) {
+
+    if (jogo.encerrado) {
+        return;
+    }
+
+    // Limita o valor para evitar números exagerados
+    if (valorManual.length >= 3) {
+        return;
+    }
+
+    valorManual += numero.toString();
+
+    atualizarDisplayTotal();
+
+    atualizarResultado();
+}
+
+
+/* =========================================
+   APAGAR ÚLTIMO NÚMERO
+========================================= */
+
+function apagarNumero() {
+
+    if (jogo.encerrado) {
+        return;
+    }
+
+    valorManual =
+        valorManual.slice(0, -1);
+
+    atualizarDisplayTotal();
+
+    atualizarResultado();
+}
+
+
+/* =========================================
+   LIMPAR VALOR
+========================================= */
+
+function limparNumero() {
+
+    if (jogo.encerrado) {
+        return;
+    }
+
+    valorManual = "";
+
+    atualizarDisplayTotal();
+
+    atualizarResultado();
+}
+
+
+/* =========================================
+   ATUALIZAR DISPLAY
+========================================= */
+
+function atualizarDisplayTotal() {
+
+    const display =
+        document.getElementById("displayTotal");
+
+    display.textContent =
+        valorManual === ""
+            ? "0"
+            : valorManual;
 }
