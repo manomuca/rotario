@@ -20,11 +20,15 @@ let jogo = {
         }
     },
 
-    historico: [],
 
     pedras: [],
 
-    jogadorBateu: null,
+  historico: [],
+
+pedrasJogador1: [],
+pedrasJogador2: [],
+
+jogadorBateu: null,
 
     encerrado: false
 };
@@ -84,8 +88,7 @@ function selecionarJogador(jogador) {
 /* =========================================
    ADICIONAR PEDRA
 ========================================= */
-
-function adicionarPedra() {
+function adicionarPedraAoJogador(jogador) {
 
     if (jogo.encerrado) {
         return;
@@ -99,19 +102,37 @@ function adicionarPedra() {
         document.getElementById("ladoB").value
     );
 
+    const soma = ladoA + ladoB;
+
+    if (soma % 5 !== 0) {
+
+        alert(
+            `A pedra ${ladoA}|${ladoB} não pode ser adicionada.\n\n` +
+            `A soma é ${soma} e precisa ser múltipla de 5.`
+        );
+
+        return;
+    }
 
     const pedra = {
         a: ladoA,
         b: ladoB
     };
+        console.log(pedra);
 
+    if (jogador === 1) {
 
-    jogo.pedras.push(pedra);
-atualizarDisplayTotal();
-    atualizarPedras();
+        jogo.pedrasJogador1.push(pedra);
 
-    atualizarResultado();
+    } else if (jogador === 2) {
 
+        jogo.pedrasJogador2.push(pedra);
+
+    }
+
+   atualizarPedras();
+       atualizarResultado();
+atualizarTela();
 }
 
 
@@ -119,61 +140,99 @@ atualizarDisplayTotal();
    REMOVER PEDRA
 ========================================= */
 
-function removerPedra(index) {
+function removerPedra(jogador, index) {
 
     if (jogo.encerrado) {
         return;
     }
 
-    jogo.pedras.splice(index, 1);
+    if (jogador === 1) {
+
+        jogo.pedrasJogador1.splice(index, 1);
+
+    } else if (jogador === 2) {
+
+        jogo.pedrasJogador2.splice(index, 1);
+
+    }
 
     atualizarPedras();
 
     atualizarResultado();
-
 }
 
 
 /* =========================================
    MOSTRAR PEDRAS
 ========================================= */
-
 function atualizarPedras() {
 
     const container =
         document.getElementById("pedrasSelecionadas");
 
-
     container.innerHTML = "";
 
+    // Criar uma proteção caso carregarJogo() tenha apagado essas propriedades
+    if (!jogo.pedrasJogador1) jogo.pedrasJogador1 = [];
+    if (!jogo.pedrasJogador2) jogo.pedrasJogador2 = [];
+    // =========================
+    // PEDRAS DO JOGADOR 1
+    // =========================
 
-    jogo.pedras.forEach((pedra, index) => {
+    jogo.pedrasJogador1.forEach(
+        (pedra, index) => {
 
-        const elemento =
-            document.createElement("div");
+            const elemento =
+                document.createElement("div");
 
-        elemento.className = "pedra";
+            elemento.className =
+                "pedra pedra-jogador1";
 
-        elemento.innerHTML = `
-            <span>${pedra.a}</span>
-            <span>${pedra.b}</span>
-        `;
+            elemento.innerHTML = `
+                <span>${pedra.a}</span>
+                <span>${pedra.b}</span>
+            `;
+
+            elemento.title =
+                "Pedra do Jogador 1 - clique para remover";
+
+            elemento.onclick = () =>
+                removerPedra(1, index);
+
+            container.appendChild(elemento);
+        }
+    );
 
 
-        elemento.title =
-            "Clique para remover";
+    // =========================
+    // PEDRAS DO JOGADOR 2
+    // =========================
 
+    jogo.pedrasJogador2.forEach(
+        (pedra, index) => {
 
-        elemento.onclick = () =>
-            removerPedra(index);
+            const elemento =
+                document.createElement("div");
 
+            elemento.className =
+                "pedra pedra-jogador2";
 
-        container.appendChild(elemento);
+            elemento.innerHTML = `
+                <span>${pedra.a}</span>
+                <span>${pedra.b}</span>
+            `;
 
-    });
+            elemento.title =
+                "Pedra do Jogador 2 - clique para remover";
 
+            elemento.onclick = () =>
+                removerPedra(2, index);
+
+            container.appendChild(elemento);
+        }
+    );
+    
 }
-
 
 /* =========================================
    CALCULAR TOTAL DAS PEDRAS
@@ -181,23 +240,26 @@ function atualizarPedras() {
 
 function calcularTotalPedras() {
 
+    const p1 = jogo.pedrasJogador1 || [];
+    const p2 = jogo.pedrasJogador2 || [];
 
-
-    // Caso contrário, utiliza o sistema
-    // tradicional das pedras.
-
-    return jogo.pedras.reduce(
-        (total, pedra) => {
-
-            return total +
-                pedra.a +
-                pedra.b;
-
-        },
+    const totalP1 = p1.reduce(
+        (total, pedra) => total + pedra.a + pedra.b,
         0
     );
 
+    const totalP2 = p2.reduce(
+        (total, pedra) => total + pedra.a + pedra.b,
+        0
+    );
+
+    return {
+        jogador1: totalP1,
+        jogador2: totalP2,
+        total: totalP1 + totalP2
+    };
 }
+
 
 
 /* =========================================
@@ -221,23 +283,6 @@ function atualizarResultado() {
         calcularTotalPedras();
 
 
-    const arredondado =
-        arredondarCinco(total);
-
-
-    document
-        .getElementById("totalPedras")
-        .textContent = total;
-
-
-    document
-        .getElementById("totalArredondado")
-        .textContent = arredondado;
-
-
-    document
-        .getElementById("pontosMao")
-        .textContent = arredondado;
 
 }
 
@@ -245,73 +290,123 @@ function atualizarResultado() {
 /* =========================================
    REGISTRAR MÃO
 ========================================= */
-
 function registrarMao() {
 
     if (jogo.encerrado) {
         return;
     }
 
+    // =========================
+    // VENCEDOR DA MÃO
+    // =========================
 
-    if (!jogo.jogadorBateu) {
+    const selectVencedor =
+        document.getElementById("vencedorMao");
 
-        alert("Selecione quem bateu.");
+    const vencedor =
+        Number(selectVencedor.value);
+
+    if (!vencedor) {
+
+        alert("Selecione quem venceu a mão.");
 
         return;
     }
 
 
-    if (jogo.pedras.length === 0) {
+    // =========================
+    // PEDRAS DOS JOGADORES
+    // =========================
 
-        alert(
-            "Adicione as pedras que ficaram com o adversário."
-        );
+    const pedrasJogador1 =
+        [...(jogo.pedrasJogador1 || [])];
+
+    const pedrasJogador2 =
+        [...(jogo.pedrasJogador2 || [])];
+
+
+    if (
+        pedrasJogador1.length === 0 &&
+        pedrasJogador2.length === 0
+    ) {
+
+        alert("Nenhuma pedra foi registrada nesta mão.");
 
         return;
     }
 
 
-    const total =
-        calcularTotalPedras();
+    // =========================
+    // VALOR DO TECLADO
+    // =========================
+
+    const valorTeclado =
+        Number(valorManual) || 0;
 
 
-    const pontos =
-        arredondarCinco(total);
+    // =========================
+    // ARREDONDAMENTO
+    // =========================
+
+    const valorArredondado =
+        arredondarCinco(valorTeclado);
 
 
-    const jogador =
-        jogo.jogadorBateu;
+    // =========================
+    // SOMAR AO PLACAR
+    // =========================
+
+    jogo.jogadores[vencedor].pontos +=
+        valorArredondado;
 
 
-    jogo.jogadores[jogador].pontos += pontos;
-
+    // =========================
+    // REGISTRAR NO HISTÓRICO
+    // =========================
 
     jogo.historico.push({
 
-        jogador: jogador,
+        jogador: vencedor,
 
-        pontos: pontos,
+        pontos: valorArredondado,
 
-        totalPedras: total,
+        valorTeclado: valorTeclado,
 
-        pedras: [...jogo.pedras]
+        valorArredondado: valorArredondado,
+
+        pedrasJogador1: pedrasJogador1,
+
+        pedrasJogador2: pedrasJogador2
 
     });
 
 
+    // =========================
+    // SALVAR
+    // =========================
+
     salvarJogo();
 
+
+    // =========================
+    // VERIFICAR 500 PONTOS
+    // =========================
 
     verificarVencedor();
 
 
-    limparMao();
+    // =========================
+    // NOVA MÃO
+    // =========================
 
-    atualizarTela();
+    if (!jogo.encerrado) {
 
+        limparMao();
+
+        atualizarTela();
+
+    }
 }
-
-
 /* =========================================
    VERIFICAR VENCEDOR
 ========================================= */

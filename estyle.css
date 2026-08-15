@@ -71,8 +71,16 @@ header p {
     font-size: 58px;
     font-weight: bold;
     margin: 10px 0;
-}
+    color: #2563eb;
 
+}
+.pontuacao2 {
+    font-size: 58px;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #dc2626;
+
+}
 .vs {
     text-align: center;
     font-weight: bold;
@@ -87,13 +95,18 @@ header p {
     overflow: hidden;
 }
 
+.progresso2 {
+    height: 100%;
+    width: 0%;
+    transition: width .3s;
+    background: #dc2626;
+}
 .progresso {
     height: 100%;
     width: 0%;
     transition: width .3s;
-    background: #198754;
+    background: #2563eb;
 }
-
 
 /* =========================
    PAINEL
@@ -130,17 +143,28 @@ header p {
     display: flex;
     gap: 10px;
 }
-
-.btn-jogador {
+.btn-jogador2 {
+    font-size: 30px;
     flex: 1;
     padding: 14px;
     border: 2px solid #dee2e6;
-    background: white;
+    background: #dc2626;
     border-radius: 10px;
     cursor: pointer;
     font-weight: bold;
+    color: white;
 }
-
+.btn-jogador1 {
+        font-size: 30px;
+    flex: 1;
+    padding: 14px;
+    border: 2px solid #dee2e6;
+    background: #0d6efd;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+}
 .btn-jogador.selecionado {
     background: #198754;
     border-color: #198754;
@@ -435,7 +459,7 @@ th {
 
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
 
     margin-bottom: 12px;
 }
@@ -475,4 +499,13 @@ th {
 
 .teclas button:active {
     transform: scale(0.97);
+}
+.pedra-jogador1 {
+    background: #2563eb;
+    border: 2px solid #2563eb;
+}
+
+.pedra-jogador2 {
+    background: #dc2626;
+    border: 2px solid #dc2626;
 }

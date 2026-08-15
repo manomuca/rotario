@@ -12,13 +12,6 @@
 <body>
 
     <main class="container">
-
-        <header>
-            <h1>🁫 Dominó</h1>
-            <p>Ponta de Cinco</p>
-        </header>
-
-
         <!-- =========================
              PLACAR
         ========================== -->
@@ -53,7 +46,8 @@
 
 
             <div class="vs">
-                VS
+            <p>🁫 Dominó</h1>
+            <p>Ponta de Cinco</p>
             </div>
 
 
@@ -74,7 +68,7 @@
 
                 <div class="barra">
                     <div
-                        class="progresso"
+                        class="progresso2"
                         id="progressoJogador2">
                     </div>
                 </div>
@@ -103,38 +97,10 @@
 
                     <button
                         id="btnJogador1"
-                        class="btn-jogador"
-                        onclick="selecionarJogador(1)">
+                        class="btn-jogador1"
+                        onclick="adicionarPedraAoJogador(1)">
                         Jogador 1
                     </button>
-
-                    <button
-                        id="btnJogador2"
-                        class="btn-jogador"
-                        onclick="selecionarJogador(2)">
-                        Jogador 2
-                    </button>
-
-                </div>
-
-            </div>
-
-
-            <div class="campo">
-
-                <label>
-                    Pedras restantes do adversário
-                </label>
-
-                <div
-                    id="pedrasSelecionadas"
-                    class="pedras-selecionadas">
-                </div>
-
-            </div>
-
-
-            <!-- TECLADO DE PEDRAS -->
 
             <div class="selecao-pedra">
 
@@ -164,16 +130,41 @@
                         <option value="6">6</option>
                     </select>
 
+                </div>
+
+            </div>
                     <button
-                        onclick="adicionarPedra()"
-                        class="btn-adicionar">
-                        + Adicionar
+                        id="btnJogador2"
+                        class="btn-jogador2"
+                        onclick="adicionarPedraAoJogador(2)">
+                        Jogador 2
                     </button>
 
                 </div>
 
             </div>
 
+
+            <div class="campo">
+
+                <label>
+                    Pedras adicionadas
+                </label>
+
+                <div
+                    id="pedrasSelecionadas"
+                    class="pedras-selecionadas">
+                </div>
+
+            </div>
+
+
+            <!-- TECLADO DE PEDRAS -->
+
+
+         
+
+            </div>
 <!-- =========================
      TECLADO NUMÉRICO
 ========================== -->
@@ -181,53 +172,44 @@
 
     <h3>Ou informe o total das pedras</h3>
 
-    <div id="displayTotal" class="display-total">0</div>
-
+    
     <div class="teclas">
         <button type="button" onclick="digitarNumero(1)">1</button>
         <button type="button" onclick="digitarNumero(2)">2</button>
         <button type="button" onclick="digitarNumero(3)">3</button>
-
+        
         <button type="button" onclick="digitarNumero(4)">4</button>
         <button type="button" onclick="digitarNumero(5)">5</button>
         <button type="button" onclick="digitarNumero(6)">6</button>
-
+        
         <button type="button" onclick="digitarNumero(7)">7</button>
         <button type="button" onclick="digitarNumero(8)">8</button>
         <button type="button" onclick="digitarNumero(9)">9</button>
-
+        
         <button type="button" onclick="apagarNumero()">←</button>
         <button type="button" onclick="digitarNumero(0)">0</button>
         <button type="button" onclick="limparNumero()">C</button>
     </div>
+    
+</div>
+<!-- RESULTADO -->
+</section>
+
+<div id="displayTotal" class="display-total">0</div>
+
+<div class="selecionar-vencedor">
+
+    <label for="vencedorMao">
+        Quem venceu a mão?
+    </label>
+
+    <select id="vencedorMao">
+        <option value="">Selecione...</option>
+        <option value="1">Jogador 1</option>
+        <option value="2">Jogador 2</option>
+    </select>
 
 </div>
-            <!-- RESULTADO -->
-
-            <div class="resultado">
-
-                <div>
-                    <span>Total das pedras</span>
-                    <strong id="totalPedras">0</strong>
-                </div>
-
-                <div>
-                    <span>Arredondado</span>
-                    <strong id="totalArredondado">0</strong>
-                </div>
-
-                <div class="resultado-final">
-
-                    <span>Pontos da mão</span>
-
-                    <strong id="pontosMao">
-                        0
-                    </strong>
-
-                </div>
-
-            </div>
-
 
             <button
                 id="btnRegistrar"
@@ -238,7 +220,6 @@
 
             </button>
 
-        </section>
 
 
         <!-- =========================
