@@ -1,9 +1,4 @@
 /* =========================================
-   DOMINÓ - PONTA DE CINCO
-========================================= */
-
-
-/* =========================================
    ESTADO DO JOGO
 ========================================= */
 let valorManual = "";
@@ -20,16 +15,11 @@ let jogo = {
         }
     },
 
-
-    pedras: [],
-
+   pedras: [],
   historico: [],
-
 pedrasJogador1: [],
 pedrasJogador2: [],
-
 jogadorBateu: null,
-
     encerrado: false
 };
 
@@ -87,8 +77,7 @@ function selecionarJogador(jogador) {
 
 /* =========================================
    ADICIONAR PEDRA
-========================================= */
-function adicionarPedraAoJogador(jogador) {
+========================================= */function adicionarPedraAoJogador(jogador) {
 
     if (jogo.encerrado) {
         return;
@@ -104,6 +93,8 @@ function adicionarPedraAoJogador(jogador) {
 
     const soma = ladoA + ladoB;
 
+    // A pedra só pode ser lançada
+    // se a soma for exatamente múltipla de 5
     if (soma % 5 !== 0) {
 
         alert(
@@ -118,21 +109,29 @@ function adicionarPedraAoJogador(jogador) {
         a: ladoA,
         b: ladoB
     };
-        console.log(pedra);
 
     if (jogador === 1) {
 
         jogo.pedrasJogador1.push(pedra);
 
+        // Soma os pontos da pedra ao placar do Jogador 1
+        jogo.jogadores[1].pontos += soma;
+
     } else if (jogador === 2) {
 
         jogo.pedrasJogador2.push(pedra);
 
+        // Soma os pontos da pedra ao placar do Jogador 2
+        jogo.jogadores[2].pontos += soma;
+
+    } else {
+
+        return;
     }
 
-   atualizarPedras();
-       atualizarResultado();
-atualizarTela();
+    atualizarPedras();
+    atualizarResultado();
+    atualizarTela();
 }
 
 
@@ -146,19 +145,37 @@ function removerPedra(jogador, index) {
         return;
     }
 
+    let pedra;
+
     if (jogador === 1) {
+
+        pedra = jogo.pedrasJogador1[index];
+
+        if (!pedra) return;
 
         jogo.pedrasJogador1.splice(index, 1);
 
     } else if (jogador === 2) {
 
+        pedra = jogo.pedrasJogador2[index];
+
+        if (!pedra) return;
+
         jogo.pedrasJogador2.splice(index, 1);
 
+    } else {
+
+        return;
     }
 
-    atualizarPedras();
+    // Retira do placar os pontos da pedra removida
+    const pontos = pedra.a + pedra.b;
 
+    jogo.jogadores[jogador].pontos -= pontos;
+
+    atualizarPedras();
     atualizarResultado();
+    atualizarTela();
 }
 
 
@@ -356,9 +373,8 @@ function registrarMao() {
     // SOMAR AO PLACAR
     // =========================
 
-    jogo.jogadores[vencedor].pontos +=
-        valorArredondado;
-
+console.log(valorTeclado);
+    jogo.jogadores[vencedor].pontos += valorArredondado;
 
     // =========================
     // REGISTRAR NO HISTÓRICO
@@ -377,8 +393,8 @@ function registrarMao() {
         pedrasJogador1: pedrasJogador1,
 
         pedrasJogador2: pedrasJogador2
-
     });
+    atualizarTela();
 
 
     // =========================
@@ -638,7 +654,7 @@ function atualizarTela() {
         .getElementById("pontuacaoJogador1")
         .textContent =
         jogo.jogadores[1].pontos;
-
+console.log(jogo.jogadores[1].pontos);
 
     document
         .getElementById("pontuacaoJogador2")
@@ -698,59 +714,85 @@ function atualizarBotoes() {
 /* =========================================
    HISTÓRICO
 ========================================= */
-
 function atualizarHistorico() {
 
     const tabela =
         document.getElementById("historico");
 
-
     tabela.innerHTML = "";
 
+    jogo.historico.forEach((mao, index) => {
 
-    jogo.historico.forEach(
-        (mao, index) => {
-
-            const tr =
-                document.createElement("tr");
+        const tr =
+            document.createElement("tr");
 
 
-            const pontos1 =
-                mao.jogador === 1
-                    ? `+${mao.pontos}`
-                    : "—";
+        // =========================
+        // PEDRAS DO JOGADOR 1
+        // =========================
+        const pedras1 =            (mao.pedrasJogador1 || [])                .map(p => `${p.a}|${p.b}`)                .join(" ");
 
 
-            const pontos2 =
-                mao.jogador === 2
-                    ? `+${mao.pontos}`
-                    : "—";
+        // =========================
+        // PEDRAS DO JOGADOR 2
+        // =========================        
+        const pedras2 =            (mao.pedrasJogador2 || [])                .map(p => `${p.a}|${p.b}`)                .join(" ");
 
 
-            const pedras =
-                mao.pedras
-                    .map(p => `${p.a}|${p.b}`)
-                    .join(" ");
+        // =========================
+        // PONTUAÇÃO DA MÃO
+        // =========================
+
+        const pontos1 =
+            mao.jogador === 1
+                ? `+${mao.pontos}`
+                : "—";
+
+        const pontos2 =
+            mao.jogador === 2
+                ? `+${mao.pontos}`
+                : "—";
 
 
-            tr.innerHTML = `
+        // =========================
+        // VALOR DO TECLADO
+        // =========================
 
-                <td>${index + 1}</td>
+        const valorTeclado =
+            mao.valorTeclado ?? 0;
 
-                <td>${pontos1}</td>
+        const valorArredondado =
+            mao.valorArredondado ?? mao.pontos;
 
-                <td>${pontos2}</td>
 
-                <td>${pedras}</td>
+        // =========================
+        // LINHA DO HISTÓRICO
+        // =========================
 
+        tr.innerHTML = `
+            <td>${index + 1}</td>
+
+            <td>${pontos1}</td>
+
+            <td>${pontos2}</td>
+
+            
+            <td>
+            ${valorTeclado}
+            →
+            ${valorArredondado}
+            </td>
             `;
+            
+            /*<td><strong>J1:</strong>${pedras1 || "—"}<br><strong>J2:</strong>${pedras2 || "—"}</td>*/
+
+        tabela.appendChild(tr);
+    });
 
 
-            tabela.appendChild(tr);
-
-        }
-    );
-
+    // =========================
+    // CONTADOR DE MÃOS
+    // =========================
 
     document
         .getElementById("contadorMaos")
@@ -760,7 +802,6 @@ function atualizarHistorico() {
                 ? "mão"
                 : "mãos"
         }`;
-
 }
 
 
@@ -899,4 +940,28 @@ function atualizarDisplayTotal() {
         valorManual === ""
             ? "0"
             : valorManual;
+}
+function atualizarCorVencedor() {
+
+    const select = document.getElementById("vencedorMao");
+
+    if (!select) return;
+
+    // Remove as cores anteriores
+    select.classList.remove("jogador1", "jogador2");
+
+    // Aplica a cor do jogador selecionado
+    if (select.value === "1") {
+        select.classList.add("jogador1");
+    }
+
+    if (select.value === "2") {
+        select.classList.add("jogador2");
+    }
+}
+const selectVencedor = document.getElementById("vencedorMao");
+
+if (selectVencedor) {
+    selectVencedor.value = "";
+    atualizarCorVencedor();
 }

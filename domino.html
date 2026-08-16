@@ -24,11 +24,11 @@
                     type="text"
                     id="nomeJogador1"
                     value="Jogador 1"
-                    class="nome-jogador"
+                    class="nome-jogador1"
                 >
 
                 <div
-                    class="pontuacao"
+                    class="pontuacao1"
                     id="pontuacaoJogador1">
                     0
                 </div>
@@ -57,11 +57,11 @@
                     type="text"
                     id="nomeJogador2"
                     value="Jogador 2"
-                    class="nome-jogador"
+                    class="nome-jogador2"
                 >
 
                 <div
-                    class="pontuacao"
+                    class="pontuacao2"
                     id="pontuacaoJogador2">
                     0
                 </div>
@@ -91,7 +91,6 @@
 
             <div class="campo">
 
-                <label>Quem bateu?</label>
 
                 <div class="botoes-jogador">
 
@@ -148,7 +147,7 @@
             <div class="campo">
 
                 <label>
-                    Pedras adicionadas
+                    Historico de Pedras lançadas.
                 </label>
 
                 <div
@@ -169,8 +168,19 @@
      TECLADO NUMÉRICO
 ========================== -->
 <div class="teclado-total">
+<div class="selecionar-vencedor">
 
-    <h3>Ou informe o total das pedras</h3>
+    <label for="vencedorMao">
+        Selecione o vencedor e informe total das pedras do perdedor
+    </label>
+
+<select id="vencedorMao" onchange="atualizarCorVencedor()">
+            <option value="">Selecione o vencedor</option>
+        <option value="1">🔵 Jogador 1</option>
+        <option value="2">🔴 Jogador 2</option>
+    </select>
+
+</div>
 
     
     <div class="teclas">
@@ -192,24 +202,13 @@
     </div>
     
 </div>
+<br>
+<div id="displayTotal" class="display-total">0</div>
 <!-- RESULTADO -->
 </section>
 
-<div id="displayTotal" class="display-total">0</div>
 
-<div class="selecionar-vencedor">
 
-    <label for="vencedorMao">
-        Quem venceu a mão?
-    </label>
-
-    <select id="vencedorMao">
-        <option value="">Selecione...</option>
-        <option value="1">Jogador 1</option>
-        <option value="2">Jogador 2</option>
-    </select>
-
-</div>
 
             <button
                 id="btnRegistrar"
@@ -230,7 +229,7 @@
 
             <div class="titulo-historico">
 
-                <h2>Histórico</h2>
+                <h2>Histórico de pontos restante na mão do perdedor.</h2>
 
                 <span id="contadorMaos">
                     0 mãos
