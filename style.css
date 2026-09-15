@@ -4,6 +4,7 @@
     box-sizing:border-box;
 }
 
+
 body{
 
     font-family:Arial,Helvetica,sans-serif;
@@ -14,259 +15,149 @@ body{
 
 }
 
+
+/* ================================= */
+/* ESTRUTURA PRINCIPAL                */
+/* ================================= */
+
 .container{
 
     display:grid;
 
-    grid-template-columns:25% 240px 1fr;
+    grid-template-columns:25% 75%;
 
     gap:15px;
+
+    width:100%;
 
     height:calc(100vh - 30px);
 
 }
 
-/* Painel da calculadora */
 
-.painel{
+/* ================================= */
+/* COLUNA DO PRINCIPAL - 75%           */
+/* ================================= */
+
+.coluna-principal{
+
+    min-width:0;
+
+    height:100%;
+
+}
+
+
+/* ================================= */
+/* ÁREA DO GRÁFICO                    */
+/* ================================= */
+
+#graficoArea{
+
+    width:100%;
+
+    height:100%;
 
     background:white;
 
+    border-radius:8px;
+
     padding:10px;
+
+    box-shadow:0 2px 4px rgba(0,0,0,.1);
+
+    overflow:hidden;
+
+}
+
+
+#grafico{
+
+    width:100% !important;
+
+    height:100% !important;
+
+}
+
+
+/* ================================= */
+/* COLUNA GRÁFICO  - 25%            */
+/* ================================= */
+
+.coluna-grafico{
+
+    min-width:0;
+
+    height:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+
+/* ================================= */
+/* BARRA DE RELATÓRIO                 */
+/* ================================= */
+
+.banner{
+
+    width:100%;
+
+    height:38px;
+
+    flex-shrink:0;
+
+    background:#ffffff;
 
     border-radius:8px;
 
-    box-shadow:0 2px 8px rgba(0,0,0,.15);
+    box-shadow:0 2px 4px rgba(0,0,0,.1);
 
-}
-
-/* Visor */
-
-#visor{
-
-
-    height:75px;
-
-    margin-bottom:10px;
-
-    font-size:26px;
-
-    font-weight:bold;
-
-    text-align:center;
-
-    border:2px solid #999;
-
-    border-radius:6px;
-
-}
-
-/* Teclado */
-
-
-
-#teclado button{
-
-    height:32px;
-
-    font-size:18px;
-
-    font-weight:bold;
-
-    border:none;
-
-    border-radius:5px;
-
-    cursor:pointer;
-
-    background:#e5e5e5;
-
-    transition:.2s;
-
-}
-
-#teclado button:hover{
-
-    background:#d0d0d0;
-
-}
-
-/* Botões */
-.topo{
+    overflow:hidden;
 
     display:flex;
-
-    justify-content:center;
-
-    gap:15px;
-
-    margin-bottom:25px;
-
-}
-
-.topo button{
-
-    width:60px;
-
-    margin-top:0;
-
-}
-
-#controleColunas{
-
-    display:flex;
-
-    justify-content:center;
 
     align-items:center;
 
-    gap:8px;
-
-    margin-top:8px;
-
 }
 
-#controleColunas button{
 
-    width:32px;
+#relatorio{
 
-    height:32px;
+    display:inline-block;
 
-    font-size:20px;
+    width:100%;
+
+    font-family:Arial,Helvetica,sans-serif;
+
+    font-size:23px;
 
     font-weight:bold;
 
-    cursor:pointer;
+    color:#333333;
+
+    white-space:nowrap;
 
 }
 
-#lblColunas{
 
-    min-width:5px;
-
-    text-align:center;
-
-    font-weight:bold;
-
-    color:#003366;
-
-}
-#relatorio {
-
-    
-    width: 100%; 
-    height: 38px; /* Altura ideal e fina para barras de cotação */
-    background-color: #f8f9fa; /* Fundo cinza bem claro igual ao modelo */
-    border-top: 1px solid #e0e0e0;
-    border-bottom: 1px solid #e0e0e0;
-    box-sizing: border-box; 
-    
-    /* Centraliza o texto verticalmente na barra 
-    display: flex;
-    align-items: center; 
-    white-space: pre; 
-    */
-    display: inline-block;
-    
-    /* Fontes limpas e profissionais */
-    font-family: Arial, sans-serif; 
-    font-size: 13px;
-    font-weight: bold;
-    color: #333333;
-}
-
-#btnImportar,
-#btnExcluir,
-#btnInserir,
-#btnOrganizar,
-#btnLimparFila{
-
-    width:50%;
-
-    height:40px;
-
-    margin-top:8px;
-
-    font-size:15px;
-
-    font-weight:bold;
-
-    border:none;
-
-    border-radius:5px;
-
-    cursor:pointer;
-
-}
-#btnOrganizar:hover{
-    background:#152d53;
-}
-#btnOrganizar{
-
-    background:#a7d219;
-
-    color:white;
-
-}
-#btnExcluir:hover{
-    background:#b71c1c;
-}
-#btnExcluir{
-
-    background:#a7d219;
-
-    color:white;
-
-}
-#btnInserir{
-
-    background:#1976D2;
-
-    color:white;
-
-}
-
-#btnInserir:hover{
-
-    background:#125ca8;
-
-}
-
-#btnLimparFila{
-
-    background:#D32F2F;
-
-    color:white;
-
-}
-
-#btnLimparFila:hover{
-
-    background:#64b71c;
-
-}
-
-#btnImportar{
-
-    background:#FF9800;
-
-    color:white;
-
-}
-
-#btnImportar:hover{
-
-    background:#F57C00;
-
-}
-
-/* Área da fila */
+/* ================================= */
+/* ÁREA PRINCIPAL DA FILA             */
+/* ================================= */
 
 .conteudo{
 
-    display:grid;
+    flex:1;
 
-    grid-template-rows:auto 1fr;
+    min-height:0;
+
+    display:flex;
+
+    flex-direction:column;
 
     gap:10px;
 
@@ -282,23 +173,232 @@ body{
 
 }
 
-/* Fila */
-#fila{
-    position: relative;
-    min-width: 350px;      /* 10 colunas × 55px     min-height: 650px; /* apenas para teste */
+
+/* ================================= */
+/* CONTROLES / BOTÕES                 */
+/* ================================= */
+
+.topo{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+    flex-shrink:0;
+
 }
+
+
+/* ================================= */
+/* VISOR                              */
+/* ================================= */
+
+#visor{
+
+    width:150px;
+
+    height:40px;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+    text-align:center;
+
+    border:2px solid #999;
+
+    border-radius:6px;
+
+    background:#fafafa;
+
+}
+
+
+/* ================================= */
+/* BOTÕES                             */
+/* ================================= */
+
+.topo button{
+
+    width:120px;
+
+    height:40px;
+
+    margin:0;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    border:none;
+
+    border-radius:5px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+
+#btnInserir{
+
+    background:#1976D2;
+
+    color:white;
+
+}
+
+
+#btnInserir:hover{
+
+    background:#125ca8;
+
+}
+
+
+#btnImportar{
+
+    background:#FF9800;
+
+    color:white;
+
+}
+
+
+#btnImportar:hover{
+
+    background:#F57C00;
+
+}
+
+
+#btnExcluir{
+
+    background:#a7d219;
+
+    color:white;
+
+}
+
+
+#btnExcluir:hover{
+
+    background:#b71c1c;
+
+}
+
+
+#btnLimparFila{
+
+    background:#D32F2F;
+
+    color:white;
+
+}
+
+
+#btnLimparFila:hover{
+
+    background:#b71c1c;
+
+}
+
+
+/* ================================= */
+/* CONTROLE DE COLUNAS                */
+/* ================================= */
+
+#controleColunas{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+
+#controleColunas button{
+
+    width:32px;
+
+    height:32px;
+
+    padding:0;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+
+#lblColunas{
+
+    min-width:25px;
+
+    text-align:center;
+
+    font-weight:bold;
+
+    color:#003366;
+
+}
+
+
+/* ================================= */
+/* ÁREA DA FILA                       */
+/* ================================= */
+
 #areaFila{
 
-    width:100%;
+    flex:1;
 
-    height:100%;
+    min-height:0;
+
+    width:100%;
 
     overflow:auto;
 
     border:1px solid #ccc;
 
+    border-radius:5px;
+
+    background:#fafafa;
+
 }
-/* Células */
+
+
+/* ================================= */
+/* FILA                               */
+/* ================================= */
+
+#fila{
+
+    position:relative;
+
+    min-width:350px;
+
+    min-height:650px;
+
+}
+
+
+/* ================================= */
+/* ITENS DA FILA                      */
+/* ================================= */
 
 .item{
 
@@ -316,54 +416,48 @@ body{
 
     font-weight:bold;
 
-   
     color:white;
 
-    box-shadow:0 0px 0px rgba(0,0,0,.1);
+    box-shadow:0 1px 2px rgba(0,0,0,.15);
 
     transition:.15s;
 
 }
+
 
 .item:hover{
 
     transform:scale(.8);
 
 }
-.lado-esquerdo{
-width:100%;
-    display:flex;
 
-    flex-direction:column;
 
-    gap:10px;
+/* ================================= */
+/* RESPONSIVIDADE                     */
+/* ================================= */
 
-}
-#graficoArea{
- width: 100%; height: 243.2px;
-    background:white;
-    border-radius:8px;
-    padding:10px;
-    box-shadow:0 2px 4px rgba(0,0,0,.1);
-    justify-content:center;
-    align-items:center;
-    overflow:auto;
-}
-#grafico{
-   width: 100%; height: 243.2px;
-}
-#selectGrafico{
+@media(max-width:900px){
 
-    width:100%;
-    height:35px;
+    .container{
 
-    margin-bottom:8px;
+        grid-template-columns:1fr;
 
-    padding:5px;
+        height:auto;
 
-    font-size:14px;
+    }
 
-    border:1px solid #999;
-    border-radius:5px;
+
+    .coluna-principal{
+
+        height:400px;
+
+    }
+
+
+    .coluna-grafico{
+
+        height:650px;
+
+    }
 
 }

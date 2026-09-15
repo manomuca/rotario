@@ -4,63 +4,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
     <div class="container">
-                <!-- 2. BANNER DE RELATÓRIO HORIZONTAL EM MOVIMENTO (Entre o gráfico e os botões) -->
-        <div class="banner">
-            <marquee behavior="scroll" direction="left" scrollamount="4" 
-            onmouseover="this.stop();" onmouseout="this.start();" style="width: 100%;">
-                <span id="relatorio">
-                📋 Aguardando dados...</span>
-            </marquee>
+
+        <!-- ========================= -->
+        <!-- COLUNA DO GRÁFICO - 25%  -->
+        <!-- ========================= -->
+
+        <div class="coluna-principal">
+
+            <div id="graficoArea">
+                <canvas id="grafico"></canvas>
+            </div>
+
         </div>
-        <!-- 1. GRÁFICO (No topo da página) -->
-        <div id="graficoArea" style="position: relative; width: 100%; height: 460px;">
-            <canvas id="grafico"></canvas>
-        </div>
 
 
+        <!-- ========================= -->
+        <!-- COLUNA PRINCIPAL - 75%    -->
+        <!-- ========================= -->
 
-        <!-- Input invisível de carregar arquivo -->
-        <input type="file" id="arquivoJSON" accept=".json" style="position:absolute; left:-9999px;" onchange="lerJSON(event)">
+        <div class="coluna-grafico">
 
-        <!-- 3. MATRIZ / TECLADO / PAINEL DE CONTROLE (Abaixo do banner) -->
-        <div class="coluna-esquerda">       
-            <div class="lado-esquerdo">
-                <div class="conteudo">      
-                    
-                    <div class="topo">
-                        <input type="text" id="visor" readonly placeholder="0.00">     
-                        <button id="btnInserir" onclick="inserir()">INSERIR</button>
-                        <button id="btnImportar" onclick="importarJSON()">Importar</button>
-                        
-                        <div id="controleColunas">
-                            <button onclick="alterarColunas(-1)">−</button>
-                            <span id="lblColunas"></span>
-                            <button onclick="alterarColunas(1)">+</button>
-                        </div>           
-                        
-                        <button id="btnLimparFila" onclick="limparFila()">Limpar Fila</button>
-                        <button id="btnExcluir" onclick="excluirUltimo()">Excluir Último</button>
-                    </div> 
+            <!-- BARRA DE RELATÓRIO -->
 
-                    <div id="areaFila">
-                        <div id="fila"></div>
+            <div class="banner">
+
+                <marquee
+                    behavior="scroll"
+                    direction="left"
+                    scrollamount="4"
+                    onmouseover="this.stop();"
+                    onmouseout="this.start();"
+                >
+
+                    <span id="relatorio">
+                        📋 Aguardando dados...
+                    </span>
+
+                </marquee>
+
+            </div>
+
+
+            <!-- CONTROLES -->
+
+            <div class="conteudo">
+
+                <div class="topo">
+
+                    <input
+                        type="text"
+                        id="visor"
+                        readonly
+                        placeholder="0.00"
+                    >
+
+                    <button
+                        id="btnInserir"
+                        onclick="inserir()"
+                    >
+                        INSERIR
+                    </button>
+
+                    <button
+                        id="btnImportar"
+                        onclick="importarJSON()"
+                    >
+                        Importar
+                    </button>
+
+
+                    <div id="controleColunas">
+
+                        <button onclick="alterarColunas(-1)">
+                            −
+                        </button>
+
+                        <span id="lblColunas"></span>
+
+                        <button onclick="alterarColunas(1)">
+                            +
+                        </button>
+
                     </div>
 
-                </div> 
-            </div> <!-- fecha lado-esquerdo -->
-        </div> <!-- fecha coluna-esquerda -->
-        
-    </div> <!-- fecha container -->
+
+                    <button
+                        id="btnLimparFila"
+                        onclick="limparFila()"
+                    >
+                        Limpar Fila
+                    </button>
+
+                    <button
+                        id="btnExcluir"
+                        onclick="excluirUltimo()"
+                    >
+                        Excluir Último
+                    </button>
+
+                </div>
+
+
+                <!-- FILA -->
+
+                <div id="areaFila">
+
+                    <div id="fila"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Input invisível para importar JSON -->
+
+    <input
+        type="file"
+        id="arquivoJSON"
+        accept=".json"
+        style="position:absolute; left:-9999px;"
+        onchange="lerJSON(event)"
+    >
+
 
     <script src="script.js"></script>
 
 </body>
+
 </html>
