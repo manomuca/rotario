@@ -29,7 +29,6 @@ body{
 /* Painel da calculadora */
 
 .painel{
-    width: 100%;
 
     background:white;
 
@@ -45,7 +44,6 @@ body{
 
 #visor{
 
-    width:100%;
 
     height:75px;
 
@@ -65,15 +63,7 @@ body{
 
 /* Teclado */
 
-#teclado{
 
-    display:grid;
-
-    grid-template-columns:repeat(3,1fr);
-
-    gap:4px;
-
-}
 
 #teclado button{
 
@@ -116,7 +106,7 @@ body{
 
 .topo button{
 
-    width:160px;
+    width:60px;
 
     margin-top:0;
 
@@ -152,7 +142,7 @@ body{
 
 #lblColunas{
 
-    min-width:45px;
+    min-width:5px;
 
     text-align:center;
 
@@ -161,26 +151,37 @@ body{
     color:#003366;
 
 }
-#relatorio{
+#relatorio {
 
- 
-    width:100%;
-
-    height:250px;
-
-    min-height:250px;
-    resize:vertical;
-    overflow:auto;
-    padding:18px;
-    font-size:13px;
+    
+    width: 100%; 
+    height: 38px; /* Altura ideal e fina para barras de cotação */
+    background-color: #f8f9fa; /* Fundo cinza bem claro igual ao modelo */
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    box-sizing: border-box; 
+    
+    /* Centraliza o texto verticalmente na barra 
+    display: flex;
+    align-items: center; 
+    white-space: pre; 
+    */
+    display: inline-block;
+    
+    /* Fontes limpas e profissionais */
+    font-family: Arial, sans-serif; 
+    font-size: 13px;
+    font-weight: bold;
+    color: #333333;
 }
-#btnRelatorio,
+
+#btnImportar,
 #btnExcluir,
 #btnInserir,
 #btnOrganizar,
 #btnLimparFila{
 
-    width:100%;
+    width:50%;
 
     height:40px;
 
@@ -245,7 +246,7 @@ body{
 
 }
 
-#btnRelatorio{
+#btnImportar{
 
     background:#FF9800;
 
@@ -253,7 +254,7 @@ body{
 
 }
 
-#btnRelatorio:hover{
+#btnImportar:hover{
 
     background:#F57C00;
 
@@ -284,7 +285,7 @@ body{
 /* Fila */
 #fila{
     position: relative;
-    min-width: 550px;      /* 10 colunas × 55px     min-height: 650px; /* apenas para teste */
+    min-width: 350px;      /* 10 colunas × 55px     min-height: 650px; /* apenas para teste */
 }
 #areaFila{
 
@@ -330,7 +331,7 @@ body{
 
 }
 .lado-esquerdo{
-
+width:100%;
     display:flex;
 
     flex-direction:column;
@@ -339,16 +340,30 @@ body{
 
 }
 #graficoArea{
+ width: 100%; height: 243.2px;
     background:white;
     border-radius:8px;
     padding:10px;
     box-shadow:0 2px 4px rgba(0,0,0,.1);
-    display:flex;
     justify-content:center;
     align-items:center;
     overflow:auto;
 }
 #grafico{
-    max-width:100%;
-    max-height:100%;
+   width: 100%; height: 243.2px;
+}
+#selectGrafico{
+
+    width:100%;
+    height:35px;
+
+    margin-bottom:8px;
+
+    padding:5px;
+
+    font-size:14px;
+
+    border:1px solid #999;
+    border-radius:5px;
+
 }
