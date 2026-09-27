@@ -1,222 +1,221 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<meta charset="utf-8">
+<title>CamerasRJ JSON</title>
 
-<meta charset="UTF-8">
-
-<title>Balancete</title>
+<link rel="stylesheet"
+      href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 
 <style>
-
-body{
-    font-family:Arial,Helvetica,sans-serif;
-    margin:20px;
-}
-
-h2{
-    color:#004080;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-th{
-    background:#004080;
-    color:white;
-}
-
-th,td{
-    border:1px solid #ccc;
-    padding:8px;
-}
-
-td{
-    background:white;
-}
-
-button{
-
-    padding:6px 12px;
-    cursor:pointer;
-    margin:3px;
-
-}
-
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f3f6f9;color:#1f2937}
+.topo{background:linear-gradient(135deg,#0f3d68,#1769aa);color:white;padding:18px 24px;box-shadow:0 3px 12px rgba(0,0,0,.18)}
+.topo h1{margin:0;font-size:24px}.topo p{margin:5px 0 0;opacity:.88;font-size:14px}
+.conteudo{max-width:1400px;margin:18px auto;padding:0 16px}
+.painel{background:white;border-radius:14px;padding:16px;box-shadow:0 3px 14px rgba(0,0,0,.08);margin-bottom:16px}
+.controles{display:flex;align-items:end;gap:16px;flex-wrap:wrap}.campo{min-width:280px;flex:1}
+.campo label{display:block;font-size:13px;font-weight:700;margin-bottom:7px;color:#374151}
+select{width:100%;padding:11px 13px;border:1px solid #cbd5e1;border-radius:9px;background:white;color:#1f2937;font-size:15px;outline:none}
+select:focus{border-color:#1769aa;box-shadow:0 0 0 3px rgba(23,105,170,.12)}
+.info{display:flex;gap:10px;flex-wrap:wrap}.badge{background:#eef5fb;border-radius:9px;padding:10px 14px;font-size:13px}
+.badge strong{color:#1769aa;font-size:16px}.vazio{text-align:center;padding:10px;color:#64748b;font-size:14px}
+#map{height:600px;border-radius:14px;overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,.10)}
+.frames{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.frame-box{background:white;border-radius:14px;padding:8px;box-shadow:0 3px 14px rgba(0,0,0,.08)}
+.frame-box iframe{display:block;width:100%;height:520px;border:0;border-radius:9px;background:#eef2f5}
+.popup-titulo{font-weight:700;font-size:15px;margin-bottom:6px}.popup-bairro{color:#64748b;font-size:12px;margin-bottom:10px}
+.popup-botao{border:0;border-radius:7px;padding:8px 12px;background:#1769aa;color:white;cursor:pointer;font-weight:600}
+.popup-botao:hover{background:#0f568d}
+@media(max-width:800px){#map{height:480px}.frames{grid-template-columns:1fr}.frame-box iframe{height:420px}.campo{min-width:100%}}
 </style>
-
 </head>
-
 <body>
+<header class="topo">
+    <h1>📍 CamerasRJ</h1>
+    <p>Mapa de câmeras geolocalizadas por bairro</p>
+</header>
 
-<h2>Balancete</h2>
+<main class="conteudo">
+<section class="painel">
+    <div class="controles">
+        <div class="campo">
+            <label for="bairro-select">Selecionar bairro</label>
+            <select id="bairro-select">
+                <option value="">Todos os bairros</option>
+            </select>
+        </div>
+        <div class="info">
+            <div class="badge">Câmeras no bairro: <strong id="contador">0</strong></div>
+            <div class="badge">Total geolocalizado: <strong id="total">0</strong></div>
+        </div>
+    </div>
+    <div id="mensagem" class="vazio">Carregando câmeras...</div>
+</section>
 
-<table id="tabela">
+<div id="map"></div>
 
-<thead>
+<div class="frames">
+    <div class="frame-box"><iframe id="frame1"></iframe></div>
+    <div class="frame-box"><iframe id="frame2"></iframe></div>
+</div>
 
-<tr>
-
-    <th>Nome</th>
-    <th>Valor</th>
-    <th>Data</th>
-    <th>Observação</th>
-    <th>Ação</th>
-
-</tr>
-
-</thead>
-
-<tbody>
-
-</tbody>
-
-</table>
-
-<br>
-
-<button onclick="novaLinha()">
-
-Nova Linha
-
-</button>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
 <script>
 
-let dados=[];
+var map = L.map('map').setView(
+    [-22.984923686,-43.4606122],
+    12
+);
 
-async function carregarJSON(){
+L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+        maxZoom:19
+    }
+).addTo(map);
 
+let frameAtual = 1;
+
+function abrirLink(link){
+
+    if(frameAtual === 1){
+
+        document
+            .getElementById('frame1')
+            .src = link;
+
+        frameAtual = 2;
+
+    }else{
+
+        document
+            .getElementById('frame2')
+            .src = link;
+
+        frameAtual = 1;
+    }
+}
+
+let cameras=[];
+let markers=[];
+ frameAtual=1;
+
+function abrirLink(link){
+    if(frameAtual===1){
+        document.getElementById('frame1').src=link;
+        frameAtual=2;
+    }else{
+        document.getElementById('frame2').src=link;
+        frameAtual=1;
+    }
+}
+
+function limparMarcadores(){
+    markers.forEach(m=>map.removeLayer(m));
+    markers=[];
+}
+
+function criarMarcador(cam){
+    const lat=Number(cam.latitude), lng=Number(cam.longitude);
+    if(!Number.isFinite(lat)||!Number.isFinite(lng)) return;
+
+    const nome=cam.caption||cam.nome||('Câmera '+cam.id);
+    const marker=L.marker([lat,lng]).addTo(map);
+
+    marker.bindPopup(`
+        <div class="popup-titulo">${nome}</div>
+        <div class="popup-bairro">${cam.bairro||''}</div>
+        <button class="popup-botao" onclick="abrirLink('${cam.url}')">Abrir câmera</button>
+    `);
+
+    marker.on('dblclick',()=>abrirLink(cam.url));
+    markers.push(marker);
+}
+
+function normalizarCameras(dados){
+    const resultado=[];
+    if(Array.isArray(dados)){
+        dados.forEach(cam=>{
+            if(cam&&typeof cam==='object') resultado.push({...cam,bairro:cam.bairro||''});
+        });
+        return resultado;
+    }
+    if(dados&&typeof dados==='object'){
+        Object.keys(dados).forEach(bairro=>{
+            if(!Array.isArray(dados[bairro])) return;
+            dados[bairro].forEach(cam=>{
+                if(cam&&typeof cam==='object') resultado.push({...cam,bairro});
+            });
+        });
+    }
+    return resultado;
+}
+
+function preencherBairros(){
+    const select=document.getElementById('bairro-select');
+    const bairros=[...new Set(cameras.map(c=>String(c.bairro||'').trim()).filter(Boolean))]
+        .sort((a,b)=>a.localeCompare(b,'pt-BR'));
+
+    select.innerHTML='<option value="">Todos os bairros</option>';
+    bairros.forEach(bairro=>{
+        const option=document.createElement('option');
+        option.value=bairro;
+        option.textContent=bairro;
+        select.appendChild(option);
+    });
+}
+
+function mostrarCameras(){
+    limparMarcadores();
+
+    const bairro=document.getElementById('bairro-select').value;
+
+    let filtradas=cameras.filter(cam=>
+        cam.geocodificado===true &&
+        Number.isFinite(Number(cam.latitude)) &&
+        Number.isFinite(Number(cam.longitude))
+    );
+
+    if(bairro) filtradas=filtradas.filter(cam=>String(cam.bairro||'').trim()===bairro);
+
+    filtradas.forEach(criarMarcador);
+
+    document.getElementById('contador').textContent=filtradas.length;
+    document.getElementById('total').textContent=cameras.filter(cam=>
+        cam.geocodificado===true &&
+        Number.isFinite(Number(cam.latitude)) &&
+        Number.isFinite(Number(cam.longitude))
+    ).length;
+
+    const msg=document.getElementById('mensagem');
+    msg.textContent=bairro
+        ? (filtradas.length ? `${filtradas.length} câmera(s) geolocalizada(s) em ${bairro}.` : `Nenhuma câmera geolocalizada encontrada em ${bairro}.`)
+        : `${filtradas.length} câmera(s) geolocalizada(s) no total.`;
+
+    if(markers.length===1) map.setView(markers[0].getLatLng(),15);
+    else if(markers.length>1) map.fitBounds(L.featureGroup(markers).getBounds().pad(.15));
+}
+
+async function carregarCameras(){
     try{
-
-        const resposta =
-            await fetch("balancete.json");
-
-        dados =
-            await resposta.json();
-
-        atualizarTabela();
-
+        const resposta=await fetch('./Convert.json');
+        if(!resposta.ok) throw new Error('HTTP '+resposta.status);
+        cameras=normalizarCameras(await resposta.json());
+        preencherBairros();
+        mostrarCameras();
+        console.log(cameras.length+' câmeras carregadas');
+    }catch(erro){
+        console.error('Erro ao carregar Convert.json',erro);
+        document.getElementById('mensagem').textContent='Não foi possível carregar Convert.json.';
     }
-    catch(erro){
-
-        console.error(erro);
-
-        alert("Erro ao carregar balancete.json");
-
-    }
-
 }
 
-function atualizarTabela(){
-
-    const tbody =
-        document.querySelector("#tabela tbody");
-
-    tbody.innerHTML="";
-
-    dados.forEach((item,indice)=>{
-
-        let tr =
-            document.createElement("tr");
-
-        tr.innerHTML=`
-
-        <td contenteditable="true">${item.nome}</td>
-
-        <td contenteditable="true">${item.valor}</td>
-
-        <td contenteditable="true">${item.data}</td>
-
-        <td contenteditable="true">${item.obs}</td>
-
-        <td>
-
-            <button onclick="adicionarMarcador(this)">
-
-                Adicionar
-
-            </button>
-
-        </td>
-
-        `;
-
-        tbody.appendChild(tr);
-
-    });
-
-}
-
-function novaLinha(){
-
-    let tbody =
-        document.querySelector("#tabela tbody");
-
-    let tr =
-        document.createElement("tr");
-
-    tr.innerHTML=`
-
-        <td contenteditable="true"></td>
-
-        <td contenteditable="true"></td>
-
-        <td contenteditable="true"></td>
-
-        <td contenteditable="true"></td>
-
-        <td>
-
-            <button onclick="adicionarMarcador(this)">
-
-                Adicionar
-
-            </button>
-
-        </td>
-
-    `;
-
-    tbody.appendChild(tr);
-
-}
-
-function adicionarMarcador(botao){
-
-    let linha =
-        botao.parentNode.parentNode;
-
-    let nome =
-        linha.cells[0].innerText;
-
-    let valor =
-        linha.cells[1].innerText;
-
-    let data =
-        linha.cells[2].innerText;
-
-    let obs =
-        linha.cells[3].innerText;
-
-    console.log({
-
-        nome,
-        valor,
-        data,
-        obs
-
-    });
-
-    alert("Registro carregado.");
-
-}
-
-carregarJSON();
+document.getElementById('bairro-select').addEventListener('change',mostrarCameras);
+carregarCameras();
 
 </script>
 
 </body>
-
 </html>
