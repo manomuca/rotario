@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>CamerasRJ JSON</title>
+
+<link rel="stylesheet"
+      href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f3f6f9;color:#1f2937}
+.topo{background:linear-gradient(135deg,#0f3d68,#1769aa);color:white;padding:18px 24px;box-shadow:0 3px 12px rgba(0,0,0,.18)}
+.topo h1{margin:0;font-size:24px}.topo p{margin:5px 0 0;opacity:.88;font-size:14px}
+.conteudo{max-width:1400px;margin:18px auto;padding:0 16px}
+.painel{background:white;border-radius:14px;padding:16px;box-shadow:0 3px 14px rgba(0,0,0,.08);margin-bottom:16px}
+.controles{display:flex;align-items:end;gap:16px;flex-wrap:wrap}.campo{min-width:280px;flex:1}
+.campo label{display:block;font-size:13px;font-weight:700;margin-bottom:7px;color:#374151}
+select{width:100%;padding:11px 13px;border:1px solid #cbd5e1;border-radius:9px;background:white;color:#1f2937;font-size:15px;outline:none}
+select:focus{border-color:#1769aa;box-shadow:0 0 0 3px rgba(23,105,170,.12)}
+.info{display:flex;gap:10px;flex-wrap:wrap}.badge{background:#eef5fb;border-radius:9px;padding:10px 14px;font-size:13px}
+.badge strong{color:#1769aa;font-size:16px}.vazio{text-align:center;padding:10px;color:#64748b;font-size:14px}
+#map{height:600px;border-radius:14px;overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,.10)}
+.frames{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.frame-box{background:white;border-radius:14px;padding:8px;box-shadow:0 3px 14px rgba(0,0,0,.08)}
+.frame-box iframe{display:block;width:100%;height:520px;border:0;border-radius:9px;background:#eef2f5}
+.popup-titulo{font-weight:700;font-size:15px;margin-bottom:6px}.popup-bairro{color:#64748b;font-size:12px;margin-bottom:10px}
+.popup-botao{border:0;border-radius:7px;padding:8px 12px;background:#1769aa;color:white;cursor:pointer;font-weight:600}
+.popup-botao:hover{background:#0f568d}
+.rota-controles{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.rota-botao{border:0;border-radius:8px;padding:10px 14px;background:#1769aa;color:white;cursor:pointer;font-weight:700}
+.rota-botao:hover{background:#0f568d}
+.rota-botao.secundario{background:#64748b}
+.rota-botao.ativo{background:#15803d}
+.rota-info{font-size:13px;color:#475569}
+.rota-lista{margin-top:10px;padding:10px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;min-height:20px;font-size:13px}
+.rota-item{display:inline-block;margin:3px 5px 3px 0;padding:5px 8px;background:#e2e8f0;border-radius:6px}
+@media(max-width:800px){#map{height:480px}.frames{grid-template-columns:1fr}.frame-box iframe{height:420px}.campo{min-width:100%}}
+</style>
+</head>
+<body>
+<header class="topo">
+    <h1>📍 CamerasRJ</h1>
+    <p>Mapa de câmeras geolocalizadas por bairro</p>
+</header>
+
+<main class="conteudo">
+<section class="painel">
+<div class="controles">
+
+    <div class="campo">
+        <label for="bairro-select">Selecionar bairro</label>
+        <select id="bairro-select">
+            <option value="">Todos os bairros</option>
+        </select>
+    </div>
+
+    <div class="campo">
+        <label for="camera-select">Selecionar câmera</label>
+        <select id="camera-select" disabled>
+            <option value="">Selecione uma câmera</option>
+        </select>
+    </div>
+
+    <div class="info">
+        <div class="badge">
+            Câmeras no bairro:
+            <strong id="contador">0</strong>
+        </div>
+
+        <div class="badge">
+            Total geolocalizado:
+            <strong id="total">0</strong>
+        </div>
+    </div>
+
+</div>
+    <div id="mensagem" class="vazio">Carregando câmeras...</div>
+
+    <div class="rota-controles">
+        <button id="btnMontarRota" class="rota-botao" type="button">Montar rota</button>
+        <button id="btnLimparRota" class="rota-botao secundario" type="button">Limpar rota</button>
+        <button id="btnCapturarRota" class="rota-botao" type="button">Capturar rota</button>
+        <span id="rotaStatus" class="rota-info">Modo normal</span>
+    </div>
+
+    <div id="rotaLista" class="rota-lista">Nenhuma câmera selecionada na rota.</div>
+</section>
+
+<div id="map"></div>
+
+<div class="frames">
+    <div class="frame-box"><iframe id="frame1"></iframe></div>
+    <div class="frame-box"><iframe id="frame2"></iframe></div>
+</div>
+<button id="btnCapturarFrame" type="button">
+    Capturar frame
+</button>
+
+<div id="resultadoCaptura"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+let dados = {};
+var map = L.map('map').setView(
+    [-22.984923686,-43.4606122],
+    12
+);
+
+L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+        maxZoom:19
+    }
+).addTo(map);
+
+let frameAtual = 1;
+
+function abrirLink(link){
+
+    if(frameAtual === 1){
+
+        document
+            .getElementById('frame1')
+            .src = link;
+
+        frameAtual = 2;
+
+    }else{
+
+        document
+            .getElementById('frame2')
+            .src = link;
+
+        frameAtual = 1;
+    }
+}
+let cameras=[];
+let markers=[];
+let modoRota = false;
+let rota = [];
+frameAtual=1;
+
+
+
+function limparMarcadores(){
+    markers.forEach(m=>map.removeLayer(m));
+    markers=[];
+}
+
+function criarMarcador(cam){
+    const lat=Number(cam.latitude), lng=Number(cam.longitude);
+    if(!Number.isFinite(lat)||!Number.isFinite(lng)) return;
+
+    const nome=cam.caption||cam.nome||('Câmera '+cam.id);
+    const marker=L.marker([lat,lng]).addTo(map);
+
+    marker.bindPopup(`
+        <div class="popup-titulo">${nome}</div>
+        <div class="popup-bairro">${cam.bairro||''}</div>
+        <button class="popup-botao" onclick="abrirLink('${cam.url}')">Abrir câmera</button>
+    `);
+
+    marker.on('click',()=>{
+        if(modoRota){
+            alternarCameraRota(cam);
+        }else{
+            marker.openPopup();
+        }
+    });
+
+    marker.on('dblclick',()=>abrirLink(cam.url));
+    marker._camera = cam;
+    markers.push(marker);
+}
+
+function atualizarListaRota(){
+    const lista=document.getElementById('rotaLista');
+    const status=document.getElementById('rotaStatus');
+
+    if(!rota.length){
+        lista.textContent='Nenhuma câmera selecionada na rota.';
+    }else{
+        lista.innerHTML=rota.map((cam,index)=>
+            `<span class="rota-item"><strong>${index+1}.</strong> ${cam.id} - ${cam.caption||cam.nome||'Câmera'}</span>`
+        ).join('');
+    }
+
+    status.textContent = modoRota
+        ? `Modo rota: ${rota.length} câmera(s) selecionada(s)`
+        : `Rota pronta: ${rota.length} câmera(s)`;
+}
+
+function alternarCameraRota(cam){
+    const id=String(cam.id);
+    const indice=rota.findIndex(item=>String(item.id)===id);
+
+    if(indice===-1){
+        rota.push(cam);
+        console.log('Câmera adicionada à rota:', cam.id);
+    }else{
+        rota.splice(indice,1);
+        console.log('Câmera removida da rota:', cam.id);
+    }
+
+    atualizarListaRota();
+}
+
+function mostrarTodasCamerasNoMapa(){
+    limparMarcadores();
+    cameras.forEach(criarMarcador);
+}
+
+function limparRota(){
+    rota=[];
+    atualizarListaRota();
+}
+
+function normalizarCameras(dados){
+    const resultado=[];
+    if(Array.isArray(dados)){
+        dados.forEach(cam=>{
+            if(cam&&typeof cam==='object') resultado.push({...cam,bairro:cam.bairro||''});
+        });
+        return resultado;
+    }
+    if(dados&&typeof dados==='object'){
+        Object.keys(dados).forEach(bairro=>{
+            if(!Array.isArray(dados[bairro])) return;
+            dados[bairro].forEach(cam=>{
+                if(cam&&typeof cam==='object') resultado.push({...cam,bairro});
+            });
+        });
+    }
+    return resultado;
+}
+
+function preencherBairros(){
+    const select=document.getElementById('bairro-select');
+    const bairros=[...new Set(cameras.map(c=>String(c.bairro||'').trim()).filter(Boolean))]
+        .sort((a,b)=>a.localeCompare(b,'pt-BR'));
+
+    select.innerHTML='<option value="">Todos os bairros</option>';
+    bairros.forEach(bairro=>{
+        const option=document.createElement('option');
+        option.value=bairro;
+        option.textContent=bairro;
+        select.appendChild(option);
+    });
+}
+async function carregarBairros() {
+    try {
+        const resposta = await fetch("cameras.json");
+
+        if (!resposta.ok) {
+            throw new Error(
+                "Não foi possível carregar cameras.json"
+            );
+        }
+
+        dados = await resposta.json();
+
+        const select =
+            document.getElementById("bairro-select");
+
+        select.innerHTML =
+            '<option value="">Todos os bairros</option>';
+
+        const bairros =
+            Object.keys(dados).sort();
+
+        bairros.forEach(bairro => {
+            const option =
+                document.createElement("option");
+
+            option.value = bairro;
+            option.textContent = bairro;
+
+            select.appendChild(option);
+        });
+
+        console.log(
+            "Bairros carregados:",
+            bairros.length
+        );
+
+    } catch (erro) {
+        console.error(
+            "Erro ao carregar bairros:",
+            erro
+        );
+    }
+}
+function mostrarCameras(){
+    limparMarcadores();
+
+    const bairro=document.getElementById('bairro-select').value;
+
+    let filtradas=cameras.filter(cam=>
+        cam.geocodificado===true &&
+        Number.isFinite(Number(cam.latitude)) &&
+        Number.isFinite(Number(cam.longitude))
+    );
+
+    if(bairro) filtradas=filtradas.filter(cam=>String(cam.bairro||'').trim()===bairro);
+
+    filtradas.forEach(criarMarcador);
+
+    document.getElementById('contador').textContent=filtradas.length;
+    document.getElementById('total').textContent=cameras.filter(cam=>
+        cam.geocodificado===true &&
+        Number.isFinite(Number(cam.latitude)) &&
+        Number.isFinite(Number(cam.longitude))
+    ).length;
+
+    const msg=document.getElementById('mensagem');
+    msg.textContent=bairro
+        ? (filtradas.length ? `${filtradas.length} câmera(s) geolocalizada(s) em ${bairro}.` : `Nenhuma câmera geolocalizada encontrada em ${bairro}.`)
+        : `${filtradas.length} câmera(s) geolocalizada(s) no total.`;
+
+    if(markers.length===1) map.setView(markers[0].getLatLng(),15);
+    else if(markers.length>1) map.fitBounds(L.featureGroup(markers).getBounds().pad(.15));
+}
+
+async function carregarCameras(){
+
+    try{
+
+        // -----------------------------
+        // 1. Carrega cameras.json
+        // -----------------------------
+
+        const respostaCameras =
+            await fetch('./cameras.json');
+
+        const bruto =
+            await respostaCameras.json();
+
+        // Aceita tanto array quanto
+        // objeto agrupado por bairro
+        const todasCameras =
+            Array.isArray(bruto)
+                ? bruto
+                : Object.values(bruto).flat();
+
+
+        // -----------------------------
+        // 2. Consulta a Azure
+        // -----------------------------
+
+        const urlAPI =
+            "https://camerasrj-geocode-api-gudbcugkftbdhfca.brazilsouth-01.azurewebsites.net/api/httptriggergeocodificador";
+
+        const respostaAzure =
+            await fetch(urlAPI);
+
+        const dadosAzure =
+            await respostaAzure.json();
+
+        if (!respostaAzure.ok || !dadosAzure.sucesso) {
+
+            throw new Error(
+                dadosAzure.mensagem ||
+                "Erro ao consultar a Azure."
+            );
+
+        }
+
+
+        // -----------------------------
+        // 3. Cria mapa das coordenadas
+        // -----------------------------
+
+        const geolocalizadas =
+            new Map();
+
+        dadosAzure.cameras.forEach(cam => {
+
+            geolocalizadas.set(
+                String(cam.id),
+                cam
+            );
+
+        });
+
+
+        // -----------------------------
+        // 4. Junta cameras.json
+        //    com as coordenadas Azure
+        // -----------------------------
+
+        cameras =
+            todasCameras
+                .map(cam => {
+
+                    const geo =
+                        geolocalizadas.get(
+                            String(cam.id)
+                        );
+
+                    // Se não estiver na Azure,
+                    // não mostra no mapa
+                    if (!geo) {
+                        return null;
+                    }
+
+                    return {
+
+                        ...cam,
+
+                        latitude:
+                            geo.latitude,
+
+                        longitude:
+                            geo.longitude,
+
+                        geocodificado:
+                            true
+                    };
+
+                })
+                .filter(cam => cam !== null);
+
+
+        // -----------------------------
+        // 5. Cria os marcadores
+        // -----------------------------
+
+        cameras.forEach(criarMarcador);
+
+
+        // -----------------------------
+        // 6. Informação no console
+        // -----------------------------
+
+        console.log(
+            cameras.length +
+            ' câmeras geolocalizadas carregadas'
+        );
+
+        console.log(
+            'Total no cameras.json:',
+            todasCameras.length
+        );
+
+        console.log(
+            'Total na Azure:',
+            dadosAzure.cameras.length
+        );
+
+
+    }catch(erro){
+
+        console.error(
+            'Erro ao carregar câmeras:',
+            erro
+        );
+
+        alert(
+            'Não foi possível carregar as câmeras.'
+        );
+
+    }
+}
+function preencherCameras(bairro) {
+
+    const select =
+        document.getElementById("camera-select");
+
+    select.innerHTML =
+        '<option value="">Selecione uma câmera</option>';
+
+    select.disabled = true;
+
+    // Total de câmeras geolocalizadas
+    document.getElementById("total").textContent =
+        cameras.length;
+
+    if (!bairro) {
+        document.getElementById("contador").textContent = 0;
+        return;
+    }
+
+    // Câmeras pertencentes ao bairro
+    const camerasDoBairro =
+        dados[bairro] || [];
+
+    // Somente as que estão geolocalizadas
+    const filtradas =
+        camerasDoBairro.filter(camera =>
+            cameras.some(geo =>
+                String(geo.id) === String(camera.id)
+            )
+        );
+
+    // Preenche o select
+    filtradas.forEach(camera => {
+
+        const option =
+            document.createElement("option");
+
+        option.value =
+            camera.id;
+
+        option.textContent =
+            camera.caption;
+
+        select.appendChild(option);
+    });
+
+    // Atualiza contador do bairro
+    document.getElementById("contador").textContent =
+        filtradas.length;
+
+    // Habilita o select se houver câmeras
+    if (filtradas.length > 0) {
+        select.disabled = false;
+    }
+
+    console.log(
+        "Bairro:",
+        bairro
+    );
+
+    console.log(
+        "Câmeras no bairro:",
+        camerasDoBairro.length
+    );
+
+    console.log(
+        "Geolocalizadas no bairro:",
+        filtradas.length
+    );
+
+    console.log(
+        "Total geolocalizado:",
+        cameras.length
+    );
+}
+carregarBairros();
+document
+    .getElementById("bairro-select")
+    .addEventListener("change", function () {
+
+        preencherCameras(this.value);
+
+    });carregarCameras();
+document
+    .getElementById("camera-select")
+    .addEventListener("change", function () {
+
+        const id = this.value;
+
+        if (!id) {
+            return;
+        }
+
+        const camera =
+            cameras.find(cam =>
+                String(cam.id) === String(id)
+            );
+
+        if (!camera) {
+            console.error(
+                "Câmera não encontrada:",
+                id
+            );
+            return;
+        }
+
+        console.log(
+            "Câmera selecionada:",
+            camera
+        );
+
+        // No modo rota, mantém os marcadores para permitir seleção no mapa.
+        if(!modoRota){
+            limparMarcadores();
+
+            // Cria somente o marcador selecionado
+            criarMarcador(camera);
+        }
+
+        // Centraliza o mapa
+        map.setView(
+            [
+                camera.latitude,
+                camera.longitude
+            ],
+            15
+        );
+    });
+
+    document
+    .getElementById("btnCapturarFrame")
+    .addEventListener("click", function () {
+
+        const frame =
+            frameAtual === 1
+                ? document.getElementById("frame2")
+                : document.getElementById("frame1");
+
+        console.log("Iframe selecionado:", frame);
+        console.log("URL do iframe:", frame.src);
+    });
+
+    document
+        .getElementById("btnMontarRota")
+        .addEventListener("click", function () {
+            modoRota = !modoRota;
+
+            if(modoRota){
+                this.textContent = "Finalizar seleção";
+                this.classList.add("ativo");
+                mostrarTodasCamerasNoMapa();
+                document.getElementById("mensagem").textContent =
+                    "Clique nos marcadores na ordem desejada para montar a rota.";
+            }else{
+                this.textContent = "Montar rota";
+                this.classList.remove("ativo");
+                document.getElementById("mensagem").textContent =
+                    "Modo normal.";
+            }
+
+            atualizarListaRota();
+        });
+
+    document
+        .getElementById("btnLimparRota")
+        .addEventListener("click", function () {
+            limparRota();
+
+            if(modoRota){
+                mostrarTodasCamerasNoMapa();
+            }
+        });
+
+    document
+        .getElementById("btnCapturarRota")
+        .addEventListener("click", async function () {
+
+            if (!rota.length) {
+                document.getElementById("rotaStatus").textContent =
+                    "Nenhuma câmera na rota.";
+                return;
+            }
+
+            const ids = rota.map(cam => String(cam.id));
+
+            console.log("Rota para captura:", ids);
+
+            this.disabled = true;
+
+            document.getElementById("rotaStatus").textContent =
+                `Enviando rota com ${ids.length} câmera(s)...`;
+
+            try {
+
+                const resposta = await fetch(
+                    "http://127.0.0.1:3000/capturar-rota",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ ids })
+                    }
+                );
+
+                const resultado = await resposta.json();
+
+                if (!resposta.ok || !resultado.sucesso) {
+                    throw new Error(
+                        resultado.mensagem ||
+                        "Erro ao capturar a rota."
+                    );
+                }
+
+                console.log(
+                    "Resultado da captura:",
+                    resultado
+                );
+
+                const sucessos = resultado.resultados.filter(
+                    item => item.status === "sucesso"
+                ).length;
+
+                const erros = resultado.resultados.filter(
+                    item => item.status === "erro"
+                ).length;
+
+                document.getElementById("rotaStatus").textContent =
+                    `Rota concluída: ${sucessos} frame(s), ${erros} exceção(ões)`;
+
+                document.getElementById("rotaLista").innerHTML =
+                    resultado.resultados.map(item => {
+                        const texto = item.status === "sucesso"
+                            ? `✅ ${item.id} — ${item.arquivo}`
+                            : `⚠️ ${item.id} — ${item.arquivo}`;
+
+                        return `<div class="rota-item">${texto}</div>`;
+                    }).join("");
+
+            } catch (erro) {
+
+    console.error(
+        "Erro ao chamar o capturador:",
+        erro
+    );
+
+    document.getElementById("rotaStatus").textContent =
+        "Erro: " + erro.message;
+
+} finally {
+
+    this.disabled = false;
+}
+        });
+
+    atualizarListaRota();
+</script>
+
+</body>
+</html>
